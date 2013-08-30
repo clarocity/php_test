@@ -16,3 +16,25 @@
  - Add a Markdown file named profile.md with links to any other work you would like us to review (GitHub Repos, side project websites, etc)
  
 [http://valuationvision.com](http://valuationvision.com)
+=======
+##Project Data
+
+_Property Table Required Columns_
+
+<table>
+	<tr>
+		<td>address</td>
+		<td>city</td>
+		<td>state</td>
+		<td>ZIP</td>
+	</tr>
+</table>
+
+_Property Sales Table Required Columns_
+
+<table>
+	<tr>
+		<td>Sale Date</td>
+		<td>Sale Price</td>
+	</tr>
+</table>
