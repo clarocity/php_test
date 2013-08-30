@@ -10,4 +10,7 @@
  - Use of a CSS framework ( Bootstrap )
  - Any other pzazz you want to add would def be cool to show your affinity for such things that you enjoy in Dev. 
 	
+##instructions :
+ 
+ - Fork this repository and submit a pull request once you complete the tasks, we will then review and let you knwo what we think. 
  
