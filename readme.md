@@ -17,6 +17,8 @@
  
 ##Project Data
 
+**Each property will have zero or more sales of that property**
+
 _Property Table Required Columns_
 
 <table>
