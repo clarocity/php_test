@@ -14,3 +14,25 @@
  
  - Fork this repository and submit a Pull Request once you complete the tasks, we will then review and let you know what we think.
  - Add a Markdown file named profile.md with links to any other work you would like us to review (GitHub Repos, side project websites, etc)
+ 
+##Project Data
+
+_Property Table Required Columns_
+
+<table>
+	<tr>
+		<td>address</td>
+		<td>city</td>
+		<td>state</td>
+		<td>ZIP</td>
+	</tr>
+</table>
+
+_Property Sales Table Required Columns_
+
+<table>
+	<tr>
+		<td>Sale Date</td>
+		<td>Sale Price</td>
+	</tr>
+</table>
