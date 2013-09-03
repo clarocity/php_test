@@ -55,23 +55,47 @@ class SimpleController {
         }
     }
 
-    public function showPropertyList() {
+    public function showPropertyList($filter = null) {
         include APP_PATH . '/views/header.php';
-        
+
+        $filter = array();
+        $search = '';
+        // Do we have search request?
+        if ($this->request->getParam('search')) {
+            $search = $this->request->getParam('search');
+            if (is_numeric($search) && 5 == strlen($search)) {
+                // ZIP
+                $filter['where']['zip'] = $search;
+            }
+
+            if (preg_match('/^([a-zA-Z]+)$/', $search) && 2 < strlen($search)) {
+                // City
+                $filter['where']['city'] = $search;
+            }
+            
+            if (preg_match('/\w./', $search) && 2 == strlen($search)) {
+                // State
+                $filter['where']['state'] =  $search;
+            }
+            
+            if (!isset($filter['where'])) {
+                // No one of previous conditionals worked and we still have something to search
+                // so we assume its address
+                $filter['where']['address'] = $search;
+            }
+        }
+
         // Prepare for pagination
-        $limit = array();
-        $numberOfRecords = $this->dataMapper->getNumberOfRecords('property');
+        $numberOfRecords = $this->dataMapper->getNumberOfRecords('property', $filter);
         $activePage = 1;
         $pages = 1;
         if ($numberOfRecords > $this->recsPerPage) {
-            
+
             // There is more than one page
             $page = ($this->request->getParam('page')) ? $this->request->getParam('page') : 1;
-            $limit = array(
-                'limit' => array(
-                    'position' => ($page - 1) * $this->recsPerPage,
-                    'count' => $this->recsPerPage
-                )
+            $filter['limit'] = array(
+                'position' => ($page - 1) * $this->recsPerPage,
+                'count' => $this->recsPerPage
             );
             $activePage = $page;
             $pages = ceil($numberOfRecords / $this->recsPerPage);
@@ -82,7 +106,7 @@ class SimpleController {
         // $pages        - number of pages
         //   
         //  will be available in the /views/index.php
-        $propertyList = $this->dataMapper->getProperties($limit);
+        $propertyList = $this->dataMapper->getProperties($filter);
         include APP_PATH . '/views/index.php';
 
         include APP_PATH . '/views/footer.php';
@@ -156,6 +180,13 @@ class SimpleController {
                 echo json_encode(array('error' => '1', 'errorMessage' => $errorMessage, 'message' => $errorMessage));
             }
         }
+    }
+
+    /**
+     * Performs search in property table
+     */
+    public function search() {
+        // Perform search despite we have GET or POST request
     }
 
     public function aboutPage() {

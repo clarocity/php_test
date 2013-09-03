@@ -20,13 +20,21 @@ class DataMapper {
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
+    /**
+     * Saves instance of property to DB, depending on propertyId we add new or update existing record
+     * 
+     * @param instance of Property() $property
+     * @return integer $lastInsertId
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function saveProperty($property) {
 
         if ($property->isValid()) {
             if ($property->propertyId) {
-                $query = 'UPDATE property SET `address` = :address, `city` = :city, `zip` = :zip, `state` = :state WHERE propertyId = :propertyId';
+                $query = 'UPDATE property SET address = :address, city = :city, zip = :zip, state = :state WHERE propertyId = :propertyId';
             } else {
-                $query = 'INSERT INTO property (`address`, `city`, `zip`, `state`) VALUES (:address, :city, :zip, :state)';
+                $query = 'INSERT INTO property (address, city, zip, state) VALUES (:address, :city, :zip, :state)';
             }
 
             $stmt = $this->db->prepare($query);
@@ -81,7 +89,7 @@ class DataMapper {
     }
 
     /**
-     * Returns list of records in property table joined with property_history according to filtering rules.
+     * Returns list of records in property table joined with sale_history according to filtering rules.
      * Should retrive the latest hitory for each record if available.
      * @param array $filter
      * @return type
@@ -102,10 +110,13 @@ class DataMapper {
             ph.saleDate,
             ph.salePrice FROM property
             LEFT OUTER JOIN 
-            (select propertyId, date_format(max(saleDate),"%m/%d/%Y") saleDate, salePrice from sale_history group by propertyId) 
-            ph on property.propertyId = ph.propertyId' . $where;
+            (SELECT propertyId, DATE_FORMAT(MAX(saleDate),"%m/%d/%Y") saleDate, salePrice 
+               FROM sale_history GROUP BY propertyId
+            ) ph 
+            ON property.propertyId = ph.propertyId' . $where;
         $stmt = $this->db->prepare($query);
         $result = $stmt->execute($whereArray);
+        $properties = array();
         while($row = $stmt->fetch()) {
             $history = new SaleHistory($row);
             $row['saleHistory'] = array(0=>$history);
@@ -171,9 +182,15 @@ class DataMapper {
     public function getNumberOfRecords($table, $filter = NULL) {
         $idName = $table . 'Id';
         $where = $this->prepareFilter($filter, $table);
+        $whereArray = array();
+        if (isset($filter['where'])) {
+            foreach ($filter['where'] as $column => $value) {
+                $whereArray[':' . $column] = $value;
+            }
+        }
         $query = 'SELECT count(' . $idName .') FROM ' . $table . $where;
         $stmt = $this->db->prepare($query);
-        $res = $stmt->execute();
+        $res = $stmt->execute($whereArray);
         return $stmt->fetchColumn();
     }
 }

@@ -5,37 +5,37 @@
  */
 class Request {
 
-    private $_get = FALSE;
-    private $_post = FALSE;
-    private $_host;
-    private $_action;
-    private $_params;
+    private $get = FALSE;
+    private $post = FALSE;
+    private $host;
+    private $action;
+    private $params;
 
     public function __construct() {
         if ('GET' == $_SERVER['REQUEST_METHOD']) {
-            $this->_get = TRUE;
+            $this->get = TRUE;
         }
 
         if ('POST' == $_SERVER['REQUEST_METHOD']) {
-            $this->_post = TRUE;
-            $this->_params = $_POST;
+            $this->post = TRUE;
+            $this->params = $_POST;
         }
-        $this->_host = $_SERVER['HTTP_HOST'];
+        $this->host = $_SERVER['HTTP_HOST'];
 
         // Constructing parameters from RESTful URL
         $uri = preg_split('/\//', substr($_SERVER['REQUEST_URI'], 1));
-        $this->_action = $uri[0];
+        $this->action = $uri[0];
         while (next($uri)) {
-            $this->_params[current($uri)] = next($uri);
+            $this->params[current($uri)] = next($uri);
         }
     }
 
     public function isPost() {
-        return $this->_post;
+        return $this->post;
     }
 
     public function isGet() {
-        return $this->_get;
+        return $this->get;
     }
 
     /**
@@ -43,7 +43,7 @@ class Request {
      * @return array()
      */
     public function getParams() {
-        return $this->_params;
+        return $this->params;
     }
 
     /**
@@ -52,14 +52,14 @@ class Request {
      * @return null | mixed
      */
     public function getParam($key) {
-        if (isset($this->_params[$key])) {
-            return $this->_params[$key];
+        if (isset($this->params[$key])) {
+            return $this->params[$key];
         }
         return NULL;
     }
 
     public function getAction() {
-        return $this->_action;
+        return $this->action;
     }
 
     /**
@@ -69,7 +69,7 @@ class Request {
      * @return string|null
      */
     public function getActive($action) {
-        if (($action == $this->_action) || (empty($this->_action) && 'index' == $action)) {
+        if (($action == $this->action) || (empty($this->action) && 'index' == $action) || ('show' == $this->action && 'index' == $action)) {
             return ' class="active" ';
         }
         return NULL;

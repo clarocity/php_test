@@ -3,6 +3,11 @@
         window.location.replace('/property/id/'+id);
     }
 </script>
+<style>
+    .search {
+        margin-bottom: 20px;
+    }
+</style>
 <!-- List container -->
 <div class="row">
     <?php
@@ -10,16 +15,17 @@
         echo '<div class="alert alert-info"><h3>There are no records in DB yet.</h3></div>';
     } else {
         ?>
-        <div class="row">
-            <div class="col-lg-6">
+        <div class="control-group show-grid col-lg-4 col-lg-offset-4 search">
+            <form role="form" method="post" action="/search">
                 <div class="input-group">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" id="search" name="search" value ="<?php echo $search;?>" placeholder="Search by City, Address, ZIP or State">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
+                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-        </div><!-- /.row -->
+            </form>
+        </div>
+
         <div>
             <table class="table table-hover table-striped">
                 <tr>
@@ -54,8 +60,8 @@
                     $class = '';
                     if ($i == $activePage) {
                         $class = 'class="active"';
-                    } 
-                    echo '<li '. $class. '><a href="/show/page/' . $i . '">' . $i . '</a></li>';
+                    }
+                    echo '<li ' . $class . '><a href="/show/page/' . $i . '">' . $i . '</a></li>';
                 }
             }
             ?>
