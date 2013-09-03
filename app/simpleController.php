@@ -68,7 +68,7 @@ class SimpleController {
                 $filter['where']['zip'] = $search;
             }
 
-            if (preg_match('/^([a-zA-Z]+)$/', $search) && 2 < strlen($search)) {
+            if (preg_match('/^([a-zA-Z\s]+)$/', $search) && 2 < strlen($search)) {
                 // City
                 $filter['where']['city'] = $search;
             }
