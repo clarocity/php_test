@@ -103,10 +103,10 @@ if (!isset($property)) {
     echo '<h4>Sale history</h4>' . PHP_EOL;
     echo '<div class="table-responsive col-lg-4 col-md-4">' . PHP_EOL;
     echo '<table id="history" class="table table-hover table-striped ">' . PHP_EOL;
+        echo '<th>Sale Date</th><th>Sale Price</th>';
     if (!$property->isValid('saleHistory')) {
         echo '<div class="alert alert-warning" id="no-history">No history found for this property</div>' . PHP_EOL;
     } else {
-        echo '<th>Sale Date</th><th>Sale Price</th>';
         foreach ($property->saleHistory as $history) {
             echo '<tr><td>' . $history->saleDate . '</td><td>' . number_format($history->salePrice, 2). '</td></tr>' .PHP_EOL;
         }

@@ -16,7 +16,7 @@ class DataMapper {
 
         $this->db = new PDO($config->getConfigItem('dsn', 'DBconfig'), $config->getConfigItem('username', 'DBconfig'), $config->getConfigItem('password', 'DBconfig'));
 
-        // I hate default attributes. Bastards.
+// I hate default attributes. Bastards.
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -80,7 +80,7 @@ class DataMapper {
                     $order .= $by . ', ';
                 }
 
-                // Drop last comma
+// Drop last comma
                 $order = substr($order, 0, -1);
                 $order .= $filter['order']['direction'];
             }
@@ -102,18 +102,28 @@ class DataMapper {
                 $whereArray[':' . $column] = $value;
             }
         }
-        $query = 'SELECT property.propertyId,
-            property.address,
-            property.zip,
-            property.state,
-            property.city,
-            ph.saleDate,
-            ph.salePrice FROM property
-            LEFT OUTER JOIN 
-            (SELECT propertyId, DATE_FORMAT(MAX(saleDate),"%m/%d/%Y") saleDate, salePrice 
-               FROM sale_history GROUP BY propertyId
-            ) ph 
-            ON property.propertyId = ph.propertyId' . $where;
+        $query = "SELECT property.propertyId,
+                        property.address,
+                        property.zip,
+                        property.state,
+                        property.city,
+                        ph.saleDate,
+                        ph.salePrice
+                       FROM property
+                       LEFT OUTER
+                       JOIN 
+                       (
+                            SELECT sale_history.propertyId, date_format(ph_.saleDate,'%m/%d/%Y') saleDate , salePrice
+                            FROM sale_history
+                            INNER JOIN 
+                            (
+                                SELECT propertyId, MAX(saleDate) saleDate
+                                FROM sale_history
+                                GROUP BY propertyId
+                             ) ph_ 
+                             ON ph_.propertyId = sale_history.propertyId AND ph_.saleDate = sale_history.saleDate
+                        ) ph 
+                       ON property.propertyId = ph.propertyId" . $where;
         $stmt = $this->db->prepare($query);
         $result = $stmt->execute($whereArray);
         $properties = array();
@@ -145,7 +155,7 @@ class DataMapper {
             ORDER BY sale_history.saleDate DESC';
         $hist_stmt = $this->db->prepare($query);
         $res = $hist_stmt->execute(array(':propertyId' => $propertyId));
-        
+
         // Create array of instances of SaleHostory class
         $historiesArray = $hist_stmt->fetchAll();
         $histories = array();
@@ -154,7 +164,7 @@ class DataMapper {
                 $histories[] = new SaleHistory($historyArray);
             }
         }
-        
+
         // Prepare array for property constructor
         $propertyArray = $prop_stmt->fetch();
         $propertyArray['saleHistory'] = $histories;
