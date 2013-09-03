@@ -37,22 +37,23 @@
         {
             $("#sale-form").modal("hide");
             $.post(
-                '/add-sale', 
-                $("#sale-form-data").serialize()
-            )
+            '/add-sale', 
+            $("#sale-form-data").serialize()
+        )
             .done(
-                function(data){
-                    $("#no-history").fadeOut("slow");
-                    $("#history").append(data);
-                }
-            )
+            function(data){
+                $("#no-history").fadeOut("slow");
+                $("#history").removeClass('hide');
+                $("#history").append(data);
+            }
+        )
             .fail(
-                function(data){
-                    // Houston, we've got a problem
-                    alert(data.responseJSON.message);
-                    console.log(data.responseJSON.errorMessage);
-                }
-            );
+            function(data){
+                // Houston, we've got a problem
+                alert(data.responseJSON.message);
+                console.log(data.responseJSON.errorMessage);
+            }
+        );
         }
     }
 
@@ -101,14 +102,25 @@ if (!isset($property)) {
         echo '<button class="btn btn-danger" onClick="deleteRecord(' . $property->propertyId . ')">Delete this record</button>' . PHP_EOL;
     }
     echo '<h4>Sale history</h4>' . PHP_EOL;
-    echo '<div class="table-responsive col-lg-4 col-md-4">' . PHP_EOL;
-    echo '<table id="history" class="table table-hover table-striped ">' . PHP_EOL;
-        echo '<th>Sale Date</th><th>Sale Price</th>';
+
+
     if (!$property->isValid('saleHistory')) {
-        echo '<div class="alert alert-warning" id="no-history">No history found for this property</div>' . PHP_EOL;
+        $classTable = ' hide ';
+        $classNoHistory = '';
     } else {
+        $classTable = '';
+        $classNoHistory = ' hide ';
+    }
+
+    echo '<div class="alert alert-warning '.$classNoHistory.' " id="no-history">No history found for this property</div>' . PHP_EOL;
+
+    echo '<div class="table-responsive col-lg-4 col-md-4 ">' . PHP_EOL;
+    echo '<table id="history" class="table table-hover table-striped '.$classTable.' ">' . PHP_EOL;
+    echo '<th>Sale Date</th><th>Sale Price</th>';
+
+    if ($property->isValid('saleHistory')) {
         foreach ($property->saleHistory as $history) {
-            echo '<tr><td>' . $history->saleDate . '</td><td>' . number_format($history->salePrice, 2). '</td></tr>' .PHP_EOL;
+            echo '<tr><td>' . $history->saleDate . '</td><td>' . number_format($history->salePrice, 2) . '</td></tr>' . PHP_EOL;
         }
     }
     echo '</table>' . PHP_EOL;
