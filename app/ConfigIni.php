@@ -8,8 +8,8 @@ class ConfigIni {
     private $config;
 
     public function __construct() {
-        if (file_exists(APP_PATH . '/config.ini')) {
-            $this->config = parse_ini_file(APP_PATH . '/config.ini', true);
+        if (file_exists(APP_PATH . '/config/config.ini')) {
+            $this->config = parse_ini_file(APP_PATH . '/config/config.ini', true);
         } else {
             throw new InvalidArgumentException('Config file not found, cannot proceed.', 500);
         }
