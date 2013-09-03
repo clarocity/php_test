@@ -23,7 +23,8 @@ class SimpleController {
 
     /**
      * Entry point of this class. From here we call all private methods that are responsible for
-     * all actions of the app.
+     * all actions of the app. 
+     * Here also all uncaught exceptions are finally caught.
      * 
      * @param string $action
      */
