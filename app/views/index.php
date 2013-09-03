@@ -88,19 +88,23 @@
             </table>
 
         </div>
-        <ul class="pagination">
-            <?php
-            if ($pages > 1) {
-                for ($i = 1; $i <= $pages; $i++) {
-                    $class = '';
-                    if ($i == $activePage) {
-                        $class = 'class="active"';
+        <div class="text-center">
+            <ul class="pagination">
+                <?php
+                if ($pages > 1) {
+                    echo '<li ' . ((1 == $activePage) ? 'class="disabled"' : '') . '><a href="show/page/1"><span>&laquo;</span></a></li>' . PHP_EOL;
+                    for ($i = 1; $i <= $pages; $i++) {
+                        $class = '';
+                        if ($i == $activePage) {
+                            $class = 'class="active"';
+                        }
+                        echo '<li ' . $class . '><a href="/show/page/' . $i . '">' . $i . '</a></li>';
                     }
-                    echo '<li ' . $class . '><a href="/show/page/' . $i . '">' . $i . '</a></li>';
+                    echo '<li ' . (($pages == $activePage) ? 'class="disabled"' : '') . '><a href="show/page/' . $pages . '"><span>&raquo;</span></a></li>' . PHP_EOL;
                 }
-            }
-            ?>
-        </ul>
+                ?>
+            </ul>
+        </div>
         <?php
     }
     ?>
