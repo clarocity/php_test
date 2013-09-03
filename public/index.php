@@ -9,7 +9,7 @@ require_once APP_PATH . '/ConfigIni.php';
 require_once APP_PATH . '/Request.php';
 require_once APP_PATH . '/DataMapper.php';
 require_once APP_PATH . '/Router.php';
-require_once APP_PATH . '/simpleController.php';
+require_once APP_PATH . '/SimpleController.php';
 
 $request = new Request();
 $routes = new Router();

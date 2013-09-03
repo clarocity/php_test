@@ -11,6 +11,7 @@
     }
     
     function addSale() {
+        // Test if date is valid
         var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/ ;
         var formValid = true;
         if (!date_regex.test($("#saleDate").val())) {
@@ -21,6 +22,8 @@
             $("#date-group").removeClass('has-error');
             $("label[for='saleDate']").replaceWith('<label for="saleDate">Date </label>');
         }
+        
+        // Test if price is valid
         if (!$.isNumeric($("#salePrice").val())) {
             formValid = false;
             $("#price-group").addClass('has-error');
@@ -38,7 +41,10 @@
                 $("#sale-form-data").serialize()
             )
             .done(
-                function(data){$("#history").append(data);}
+                function(data){
+                    $("#no-history").fadeOut("slow");
+                    $("#history").append(data);
+                }
             )
             .fail(
                 function(data){

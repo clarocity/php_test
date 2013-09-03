@@ -26,7 +26,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Project name</a>
+                    <a class="navbar-brand" href="/">Test app</a>
                 </div>
                 <?php $request = new Request(); ?>
                 <div class="collapse navbar-collapse">
@@ -34,7 +34,6 @@
                         <li <?php echo $request->getActive('index');?>><a href="/">Home</a></li>
                         <li <?php echo $request->getActive('add');?>><a href="/add">Add property</a></li>
                         <li <?php echo $request->getActive('about');?>><a href="/about">About</a></li>
-                        <li <?php echo $request->getActive('contact');?>><a href="/contact">Contact</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

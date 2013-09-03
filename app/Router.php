@@ -2,18 +2,18 @@
 
 class Router {
 
-    private $_routes;
+    private $routes;
 
     public function __construct() {
         $config = new ConfigIni();
-        $this->_routes = $config->getConfigSection('routes');
+        $this->routes = $config->getConfigSection('routes');
     }
 
     public function getControllerAction($action) {
-        if (isset($this->_routes[$action])) {
-            return $this->_routes[$action];
+        if (isset($this->routes[$action])) {
+            return $this->routes[$action];
         }
-        return 'index';
+        return 'indexPage';
     }
 
     /**

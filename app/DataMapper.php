@@ -117,9 +117,9 @@ class DataMapper {
         $stmt = $this->db->prepare($query);
         $result = $stmt->execute($whereArray);
         $properties = array();
-        while($row = $stmt->fetch()) {
+        while ($row = $stmt->fetch()) {
             $history = new SaleHistory($row);
-            $row['saleHistory'] = array(0=>$history);
+            $row['saleHistory'] = array(0 => $history);
             $properties[] = new Property($row);
         }
         return $properties;
@@ -133,13 +133,20 @@ class DataMapper {
      * @return array
      */
     public function getProperty($propertyId) {
+        // First get property
         $query = 'SELECT * FROM property WHERE propertyId=:propertyId';
         $prop_stmt = $this->db->prepare($query);
         $res = $prop_stmt->execute(array(':propertyId' => $propertyId));
-        $query = 'SELECT saleHistoryId, propertyId, salePrice, date_format(saleDate, "%m/%d/%Y") saleDate FROM sale_history WHERE propertyId=:propertyId';
+
+        // Get history
+        $query = 'SELECT saleHistoryId, propertyId, salePrice, date_format(saleDate, "%m/%d/%Y") saleDate 
+            FROM sale_history 
+            WHERE propertyId=:propertyId 
+            ORDER BY sale_history.saleDate DESC';
         $hist_stmt = $this->db->prepare($query);
         $res = $hist_stmt->execute(array(':propertyId' => $propertyId));
-        $propertyArray = $prop_stmt->fetch();
+        
+        // Create array of instances of SaleHostory class
         $historiesArray = $hist_stmt->fetchAll();
         $histories = array();
         if (!empty($historiesArray)) {
@@ -147,17 +154,32 @@ class DataMapper {
                 $histories[] = new SaleHistory($historyArray);
             }
         }
+        
+        // Prepare array for property constructor
+        $propertyArray = $prop_stmt->fetch();
         $propertyArray['saleHistory'] = $histories;
         $property = new Property($propertyArray);
         return $property;
     }
 
+    /**
+     * Just delete. If there are any errors - let them rise.
+     * 
+     * @param type $propertyId
+     * @return type
+     */
     public function deleteProperty($propertyId) {
         $query = 'DELETE FROM property WHERE propertyId = :propertyId';
         $stmt = $this->db->prepare($query);
         return $stmt->execute(array(':propertyId' => $propertyId));
     }
 
+    /**
+     * Add information about sale of property to property history (sale_history table)
+     * @param instance of SaleHistory() $history
+     * @return integer lastInsertId
+     * @throws Exception
+     */
     public function addSale($history) {
         if ($history->saleHistoryId) {
             // Update existing record
@@ -171,15 +193,21 @@ class DataMapper {
         if (!$res) {
             throw new Exception('Something wrong ');
         }
-        
+
         if ($history->saleHistoryId) {
             return $history->saleHistoryId;
         }
         return $this->db->lastInsertId();
     }
 
-    
+    /**
+     * Calculates number of records for particular filter, used for pagination
+     * @param string $table
+     * @param array $filter
+     * @return integer
+     */
     public function getNumberOfRecords($table, $filter = NULL) {
+        // we will count id's, thats good for DB performance
         $idName = $table . 'Id';
         $where = $this->prepareFilter($filter, $table);
         $whereArray = array();
@@ -188,11 +216,12 @@ class DataMapper {
                 $whereArray[':' . $column] = $value;
             }
         }
-        $query = 'SELECT count(' . $idName .') FROM ' . $table . $where;
+        $query = 'SELECT count(' . $idName . ') FROM ' . $table . $where;
         $stmt = $this->db->prepare($query);
         $res = $stmt->execute($whereArray);
         return $stmt->fetchColumn();
     }
+
 }
 
 ?>

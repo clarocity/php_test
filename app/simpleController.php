@@ -34,6 +34,7 @@ class SimpleController {
     }
 
     public function addProperty() {
+        session_destroy();
         if ($this->request->isGet()) {
             include APP_PATH . '/views/header.php';
             include APP_PATH . '/views/add-property.php';
@@ -55,10 +56,20 @@ class SimpleController {
         }
     }
 
+    /**
+     * Pretty loaded function. By default it shows a list of all property records.
+     * It also takes care of 1) pagination;
+     *                      2) search filtering;
+     *                      3) sorting of records
+     * @param type $filter
+     */
     public function showPropertyList($filter = null) {
-        include APP_PATH . '/views/header.php';
 
-        $filter = array();
+        if ('search' == $this->request->getAction() && $this->request->getParam('delete')){
+            unset($_SESSION['filter']['where'][$this->request->getParam('delete')]);
+        }
+
+        $filter = (isset($_SESSION['filter'])) ? $_SESSION['filter'] : array();
         $search = '';
         // Do we have search request?
         if ($this->request->getParam('search')) {
@@ -72,19 +83,18 @@ class SimpleController {
                 // City
                 $filter['where']['city'] = $search;
             }
-            
-            if (preg_match('/\w./', $search) && 2 == strlen($search)) {
+
+            if (preg_match('/[A-Z]+/', $search) && 2 == strlen($search)) {
                 // State
-                $filter['where']['state'] =  $search;
+                $filter['where']['state'] = $search;
             }
-            
-            if (!isset($filter['where'])) {
+
+            if (preg_match('/(\d+)\s([A-Z][a-z]+)/', $search)) {
                 // No one of previous conditionals worked and we still have something to search
                 // so we assume its address
                 $filter['where']['address'] = $search;
             }
         }
-
         // Prepare for pagination
         $numberOfRecords = $this->dataMapper->getNumberOfRecords('property', $filter);
         $activePage = 1;
@@ -100,6 +110,10 @@ class SimpleController {
             $activePage = $page;
             $pages = ceil($numberOfRecords / $this->recsPerPage);
         }
+        $_SESSION['filter'] = $filter;
+
+        // Generating output
+        include APP_PATH . '/views/header.php';
 
         // $propertyList - array of properties
         // $activePage   - current page
@@ -108,7 +122,6 @@ class SimpleController {
         //  will be available in the /views/index.php
         $propertyList = $this->dataMapper->getProperties($filter);
         include APP_PATH . '/views/index.php';
-
         include APP_PATH . '/views/footer.php';
     }
 
@@ -121,8 +134,7 @@ class SimpleController {
 
     public function editProperty() {
         if ($this->request->isGet()) {
-            $propertyArray = $this->dataMapper->getProperty($this->request->getParam('propertyId'));
-            $property = new Property($propertyArray['property']);
+            $property = $this->dataMapper->getProperty($this->request->getParam('propertyId'));
             include APP_PATH . '/views/header.php';
             include APP_PATH . '/views/add-property.php';
             include APP_PATH . '/views/footer.php';
@@ -143,7 +155,7 @@ class SimpleController {
         try {
             $this->dataMapper->deleteProperty($this->request->getParam('propertyId'));
         } catch (Exception $e) {
-            $this->error('You cannot delete this record. Reason: ' . $e->getPrevious()->getMessage(), $e);
+            $this->errorPage('You cannot delete this record. Reason: ' . $e->getPrevious()->getMessage(), $e);
         }
         $router = new Router();
         $router->redirect(array('action' => 'index'));
@@ -182,36 +194,24 @@ class SimpleController {
         }
     }
 
-    /**
-     * Performs search in property table
-     */
-    public function search() {
-        // Perform search despite we have GET or POST request
-    }
-
     public function aboutPage() {
+        session_destroy();
         include APP_PATH . '/views/header.php';
-        include APP_PATH . '/views/index.php';
-        include APP_PATH . '/views/footer.php';
-    }
-
-    public function contactsPage() {
-        include APP_PATH . '/views/header.php';
-        include APP_PATH . '/views/index.php';
+        include APP_PATH . '/views/about.php';
         include APP_PATH . '/views/footer.php';
     }
 
     /**
      * This is default method. It is called if no valid route is found for requested action.
      */
-    public function index() {
+    public function indexPage() {
         $this->showPropertyList();
     }
 
     /**
      * Exceptions and errors handler.
      */
-    public function error($message, $exception) {
+    public function errorPage($message, $exception) {
         include APP_PATH . '/views/header.php';
         include APP_PATH . '/views/error.php';
         include APP_PATH . '/views/footer.php';
