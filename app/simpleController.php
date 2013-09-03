@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Simple controller functions - look at request, call needed methods, return appropriate views.
+ * Simple controller functions - looks at request, calls needed methods, loads appropriate views.
  */
 require_once APP_PATH . '/Property.php';
 require_once APP_PATH . '/SaleHistory.php';
@@ -21,26 +21,33 @@ class SimpleController {
         $this->dataMapper = new DataMapper();
     }
 
+    /**
+     * Entry point of this class. From here we call all private methods that are responsible for
+     * all actions of the app.
+     * 
+     * @param string $action
+     */
     public function run($action) {
         try {
             if (method_exists($this, $action)) {
                 $this->$action();
+            } else {
+                $this->indexPage();
             }
         } catch (Exception $e) {
-            echo '<pre>';
-            var_dump($e);
-            echo '</pre>';
+            $this->errorPage('Something really unexpected happend. Error message: ' . $e->getMessage(), $e);
         }
     }
 
-    public function addProperty() {
+    private function addProperty() {
+        //Destroy session data - we will not need it so far
         session_destroy();
         if ($this->request->isGet()) {
+            // Load form for adding new record
             include APP_PATH . '/views/header.php';
             include APP_PATH . '/views/add-property.php';
             include APP_PATH . '/views/footer.php';
         } else {
-
             // Validate received data. Assume that all fields are required
             $property = new Property($this->request->getParams());
             if ($property->isValid()) {
@@ -63,13 +70,14 @@ class SimpleController {
      *                      3) sorting of records
      * @param type $filter
      */
-    public function showPropertyList($filter = null) {
+    private function showPropertyList($filter = null) {
 
-        if ('search' == $this->request->getAction() && $this->request->getParam('delete')){
+        if ('search' == $this->request->getAction() && $this->request->getParam('delete')) {
             unset($_SESSION['filter']['where'][$this->request->getParam('delete')]);
         }
 
         $filter = (isset($_SESSION['filter'])) ? $_SESSION['filter'] : array();
+
         $search = '';
         // Do we have search request?
         if ($this->request->getParam('search')) {
@@ -90,11 +98,14 @@ class SimpleController {
             }
 
             if (preg_match('/(\d+)\s([A-Z][a-z]+)/', $search)) {
-                // No one of previous conditionals worked and we still have something to search
-                // so we assume its address
+                // Address
                 $filter['where']['address'] = $search;
             }
         }
+        
+        // Store filter data for complex search
+        $_SESSION['filter'] = $filter;
+
         // Prepare for pagination
         $numberOfRecords = $this->dataMapper->getNumberOfRecords('property', $filter);
         $activePage = 1;
@@ -110,9 +121,8 @@ class SimpleController {
             $activePage = $page;
             $pages = ceil($numberOfRecords / $this->recsPerPage);
         }
-        $_SESSION['filter'] = $filter;
 
-        // Generating output
+        // Generate output
         include APP_PATH . '/views/header.php';
 
         // $propertyList - array of properties
@@ -125,14 +135,18 @@ class SimpleController {
         include APP_PATH . '/views/footer.php';
     }
 
-    public function showProperty() {
+    /**
+     * Shows particular record
+     */
+    private function showProperty() {
         $property = $this->dataMapper->getProperty($this->request->getParam('id'));
         include APP_PATH . '/views/header.php';
         include APP_PATH . '/views/show-property.php';
         include APP_PATH . '/views/footer.php';
     }
 
-    public function editProperty() {
+    // Edit record. Allow it only if there are no history records for it??
+    private function editProperty() {
         if ($this->request->isGet()) {
             $property = $this->dataMapper->getProperty($this->request->getParam('propertyId'));
             include APP_PATH . '/views/header.php';
@@ -151,7 +165,10 @@ class SimpleController {
         }
     }
 
-    public function deleteProperty() {
+    /**
+     * Delete record. Allow it only if there are no history records for it.
+     */
+    private function deleteProperty() {
         try {
             $this->dataMapper->deleteProperty($this->request->getParam('propertyId'));
         } catch (Exception $e) {
@@ -165,7 +182,7 @@ class SimpleController {
      * Add sale price and date to property record.
      * Here we handle AJAX call from the web
      */
-    public function addSale() {
+    private function addSale() {
         if ($this->request->isPost()) {
             $historyArray = $this->request->getParams();
 //            $historyArray['saleDate'] = date('Y-m-d');
@@ -194,7 +211,7 @@ class SimpleController {
         }
     }
 
-    public function aboutPage() {
+    private function aboutPage() {
         session_destroy();
         include APP_PATH . '/views/header.php';
         include APP_PATH . '/views/about.php';
@@ -204,14 +221,14 @@ class SimpleController {
     /**
      * This is default method. It is called if no valid route is found for requested action.
      */
-    public function indexPage() {
+    private function indexPage() {
         $this->showPropertyList();
     }
 
     /**
-     * Exceptions and errors handler.
+     * Exceptions and errors representer.
      */
-    public function errorPage($message, $exception) {
+    private function errorPage($message, $exception) {
         include APP_PATH . '/views/header.php';
         include APP_PATH . '/views/error.php';
         include APP_PATH . '/views/footer.php';

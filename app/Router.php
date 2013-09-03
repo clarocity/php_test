@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Simple class to perform basic routing inside the app.
+ * All settings are in config file, section 'routes'
+ */
 class Router {
 
     private $routes;
@@ -9,6 +12,11 @@ class Router {
         $this->routes = $config->getConfigSection('routes');
     }
 
+    /**
+     * Checks if requested action is registered in routes config. If not - returns default "index" action
+     * @param string $action
+     * @return string
+     */
     public function getControllerAction($action) {
         if (isset($this->routes[$action])) {
             return $this->routes[$action];
@@ -17,7 +25,7 @@ class Router {
     }
 
     /**
-     * Generates new route. If $whereTo is array it is expected to be
+     * Generates new route and redirects to it. If $whereTo is array it is expected to be
      * of form array('action'=>'desired_action', 'parameter1'=>'value1', ...)
      * @param string | array $where 
      */

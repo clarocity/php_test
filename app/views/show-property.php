@@ -48,6 +48,7 @@
             )
             .fail(
                 function(data){
+                    // Houston, we've got a problem
                     alert(data.responseJSON.message);
                     console.log(data.responseJSON.errorMessage);
                 }
@@ -100,14 +101,17 @@ if (!isset($property)) {
         echo '<button class="btn btn-danger" onClick="deleteRecord(' . $property->propertyId . ')">Delete this record</button>' . PHP_EOL;
     }
     echo '<h4>Sale history</h4>' . PHP_EOL;
-    echo '<table id="history" class="table table-hover table-striped">';
+    echo '<div class="table-responsive col-lg-4 col-md-4">' . PHP_EOL;
+    echo '<table id="history" class="table table-hover table-striped ">' . PHP_EOL;
     if (!$property->isValid('saleHistory')) {
         echo '<div class="alert alert-warning" id="no-history">No history found for this property</div>' . PHP_EOL;
     } else {
+        echo '<th>Sale Date</th><th>Sale Price</th>';
         foreach ($property->saleHistory as $history) {
-            echo '<tr><td>' . $history->saleDate . '</td><td>' . $history->salePrice. '</td></tr>';
+            echo '<tr><td>' . $history->saleDate . '</td><td>' . number_format($history->salePrice, 2). '</td></tr>' .PHP_EOL;
         }
     }
-    echo '</table>';
+    echo '</table>' . PHP_EOL;
+    echo '</div>' . PHP_EOL;
 }
 ?>

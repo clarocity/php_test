@@ -2,6 +2,8 @@
 session_start();
 
 date_default_timezone_set('America/Los_Angeles');
+setlocale(LC_MONETARY, 'en_US');
+
 define('APP_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../app');
 define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
 

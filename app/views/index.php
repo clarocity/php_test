@@ -1,10 +1,12 @@
 <script>
     function showProperty(id){
+        // Redirect to page with property details
         window.location.replace('/property/id/'+id);
     }
     
     function deleteSearchWord(word) {
-        
+        // Deletes label with search word from panel
+        // Also requests removal of this word from session
         $.get('/search/delete/'+word)
         .done(function(data){
             $("#"+word).remove();
@@ -27,6 +29,7 @@
     if (empty($propertyList)) {
         echo '<div class="alert alert-info"><h3>No records found in DB.</h3></div>';
     } else {
+        // Create records output
         ?>
         <div class="col-lg-4 col-lg-offset-4 search">
             <form role="form" method="post" action="/search" class="search">
@@ -40,6 +43,7 @@
             <?php
             if (!empty($_SESSION['filter']['where'])) {
                 ?>
+                <!-- Panel with search keywords used to filter records -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Search words:
@@ -50,8 +54,8 @@
                             echo '<span class="label label-warning search-words" id="' . $key . '"><a href="javascript:deleteSearchWord(\'' . $key . '\')">&times</a> ' . $key . ': ' . $value . '</span>' . PHP_EOL;
                         }
                         ?>
-                    </div>
-                </div>
+                    </div><!-- /.panel-body-->
+                </div><!-- /.panel-->
                 <?php
             }
             ?>
@@ -78,7 +82,7 @@
                     '<td>' . $row->zip . '</td>' .
                     '<td>' . $row->state . '</td>' .
                     '<td>' . (($saleHistory[0]->saleDate) ? $saleHistory[0]->saleDate : 'No data') . '</td>' .
-                    '<td>' . (($saleHistory[0]->salePrice) ? $saleHistory[0]->salePrice : 'No data') . '</td></tr>' . PHP_EOL;
+                    '<td>' . (($saleHistory[0]->salePrice) ? number_format($saleHistory[0]->salePrice, 2) : 'No data') . '</td></tr>' . PHP_EOL;
                 }
                 ?>
             </table>
