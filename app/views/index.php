@@ -26,7 +26,7 @@
 <!-- List container -->
 <div class="row">
     <?php
-    if (empty($propertyList)) {
+    if (!isset($this->propertyList)) {
         echo '<div class="alert alert-info"><h3>No records found in DB.</h3></div>';
     } else {
         // Create records output
@@ -34,7 +34,7 @@
         <div class="col-lg-4 col-lg-offset-4 search">
             <form role="form" method="post" action="/search" class="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="search" name="search" value ="<?php echo $search; ?>" placeholder="Search by City, Address, ZIP or State">
+                    <input type="text" class="form-control" id="search" name="search" value ="<?php echo $this->search; ?>" placeholder="Search by City, Address, ZIP or State">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
@@ -72,7 +72,7 @@
                     <th>Last sale price</th>
                 </tr>
                 <?php
-                foreach ($propertyList as $row) {
+                foreach ($this->propertyList as $row) {
                     if ($row->saleHistory) {
                         $saleHistory = $row->saleHistory;
                     }
@@ -91,16 +91,16 @@
         <div class="text-center">
             <ul class="pagination">
                 <?php
-                if ($pages > 1) {
-                    echo '<li ' . ((1 == $activePage) ? 'class="disabled"' : '') . '><a href="show/page/1"><span>&laquo;</span></a></li>' . PHP_EOL;
-                    for ($i = 1; $i <= $pages; $i++) {
+                if ($this->pages > 1) {
+                    echo '<li ' . ((1 == $this->activePage) ? 'class="disabled"' : '') . '><a href="show/page/1"><span>&laquo;</span></a></li>' . PHP_EOL;
+                    for ($i = 1; $i <= $this->pages; $i++) {
                         $class = '';
-                        if ($i == $activePage) {
+                        if ($i == $this->activePage) {
                             $class = 'class="active"';
                         }
                         echo '<li ' . $class . '><a href="/show/page/' . $i . '">' . $i . '</a></li>';
                     }
-                    echo '<li ' . (($pages == $activePage) ? 'class="disabled"' : '') . '><a href="show/page/' . $pages . '"><span>&raquo;</span></a></li>' . PHP_EOL;
+                    echo '<li ' . (($this->pages == $this->activePage) ? 'class="disabled"' : '') . '><a href="show/page/' . $this->pages . '"><span>&raquo;</span></a></li>' . PHP_EOL;
                 }
                 ?>
             </ul>

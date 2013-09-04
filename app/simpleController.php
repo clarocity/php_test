@@ -5,6 +5,7 @@
  */
 require_once APP_PATH . '/Property.php';
 require_once APP_PATH . '/SaleHistory.php';
+require_once APP_PATH . '/View.php';
 
 class SimpleController {
 
@@ -12,6 +13,9 @@ class SimpleController {
     private $request;
     private $dataMapper;
     private $recsPerPage;
+    private $view;
+    private $messages;
+    private $exception;
 
     public function __construct() {
         $this->request = new Request();
@@ -30,25 +34,25 @@ class SimpleController {
      */
     public function run($action) {
         try {
-            if (method_exists($this, $action)) {
-                $this->$action();
-            } else {
-                $this->indexPage();
+            if (!method_exists($this, $action)) {
+                $action = 'errorPage';
+                $this->messages = '404 - Page not found';
             }
+            $this->view = new View($action);
+            $this->view->setLayout('layout.php');
+            $this->$action();
+            $this->view->render();
         } catch (Exception $e) {
-            $this->errorPage('Something really unexpected happend. Error message: ' . $e->getMessage(), $e);
+            $this->exception = $e;
+            $this->messages = 'Something terrible happened. ' . $e->getMessage();
+            $this->run('errorPage');
         }
     }
 
     private function addProperty() {
         //Destroy session data - we will not need it so far
         session_destroy();
-        if ($this->request->isGet()) {
-            // Load form for adding new record
-            include APP_PATH . '/views/header.php';
-            include APP_PATH . '/views/add-property.php';
-            include APP_PATH . '/views/footer.php';
-        } else {
+        if ($this->request->isPost()) {
             // Validate received data. Assume that all fields are required
             $property = new Property($this->request->getParams());
             if ($property->isValid()) {
@@ -56,7 +60,7 @@ class SimpleController {
                 $router = new Router();
                 $this->run($router->redirect(array('action' => 'property', 'id' => $recordId)));
             } else {
-                $errors = 'There are errors on the form';
+                $this->view->errors = 'There are errors on the form';
                 include APP_PATH . '/views/header.php';
                 include APP_PATH . '/views/add-property.php';
                 include APP_PATH . '/views/footer.php';
@@ -72,46 +76,46 @@ class SimpleController {
      * @param type $filter
      */
     private function showPropertyList($filter = null) {
-
+        $this->view->setView('index.php');
         if ('search' == $this->request->getAction() && $this->request->getParam('delete')) {
             unset($_SESSION['filter']['where'][$this->request->getParam('delete')]);
         }
 
         $filter = (isset($_SESSION['filter'])) ? $_SESSION['filter'] : array();
 
-        $search = '';
+        $this->view->search = '';
         // Do we have search request?
         if ($this->request->getParam('search')) {
-            $search = $this->request->getParam('search');
-            if (is_numeric($search) && 5 == strlen($search)) {
+            $this->view->search = $this->request->getParam('search');
+            if (is_numeric($this->view->search) && 5 == strlen($this->view->search)) {
                 // ZIP
-                $filter['where']['zip'] = $search;
+                $filter['where']['zip'] = $this->view->search;
             }
 
-            if (preg_match('/^([a-zA-Z\s]+)$/', $search) && 2 < strlen($search)) {
+            if (preg_match('/^([a-zA-Z\s]+)$/', $this->view->search) && 2 < strlen($this->view->search)) {
                 // City
-                $filter['where']['city'] = $search;
+                $filter['where']['city'] = $this->view->search;
             }
 
-            if (preg_match('/[A-Z]+/', $search) && 2 == strlen($search)) {
+            if (preg_match('/[A-Z]+/', $this->view->search) && 2 == strlen($this->view->search)) {
                 // State
-                $filter['where']['state'] = $search;
+                $filter['where']['state'] = $this->view->search;
             }
 
-            if (preg_match('/(\d+)\s([A-Z][a-z]+)/', $search)) {
+            if (preg_match('/(\d+)\s([A-Z][a-z]+)/', $this->view->search)) {
                 // Address
-                $filter['where']['address'] = $search;
+                $filter['where']['address'] = $this->view->search;
             }
         }
-        
+
         // Store filter data for complex search
         $_SESSION['filter'] = $filter;
 
         // Prepare for pagination
-        $numberOfRecords = $this->dataMapper->getNumberOfRecords('property', $filter);
-        $activePage = 1;
-        $pages = 1;
-        if ($numberOfRecords > $this->recsPerPage) {
+        $this->view->numberOfRecords = $this->dataMapper->getNumberOfRecords('property', $filter);
+        $this->view->activePage = 1;
+        $this->view->pages = 1;
+        if ($this->view->numberOfRecords > $this->recsPerPage) {
 
             // There is more than one page
             $page = ($this->request->getParam('page')) ? $this->request->getParam('page') : 1;
@@ -119,49 +123,30 @@ class SimpleController {
                 'position' => ($page - 1) * $this->recsPerPage,
                 'count' => $this->recsPerPage
             );
-            $activePage = $page;
-            $pages = ceil($numberOfRecords / $this->recsPerPage);
+            $this->view->activePage = $page;
+            $this->view->pages = ceil($this->view->numberOfRecords / $this->recsPerPage);
         }
-
-        // Generate output
-        include APP_PATH . '/views/header.php';
-
-        // $propertyList - array of properties
-        // $activePage   - current page
-        // $pages        - number of pages
-        //   
-        //  will be available in the /views/index.php
-        $propertyList = $this->dataMapper->getProperties($filter);
-        include APP_PATH . '/views/index.php';
-        include APP_PATH . '/views/footer.php';
+        $this->view->propertyList = $this->dataMapper->getProperties($filter);
     }
 
     /**
      * Shows particular record
      */
     private function showProperty() {
-        $property = $this->dataMapper->getProperty($this->request->getParam('id'));
-        include APP_PATH . '/views/header.php';
-        include APP_PATH . '/views/show-property.php';
-        include APP_PATH . '/views/footer.php';
+        $this->view->property = $this->dataMapper->getProperty($this->request->getParam('id'));
     }
 
     // Edit record. Allow it only if there are no history records for it??
+    // We will use add-property form
     private function editProperty() {
+        $this->view->setView('add-property.php');
         if ($this->request->isGet()) {
-            $property = $this->dataMapper->getProperty($this->request->getParam('propertyId'));
-            include APP_PATH . '/views/header.php';
-            include APP_PATH . '/views/add-property.php';
-            include APP_PATH . '/views/footer.php';
+            $this->view->property = $this->dataMapper->getProperty($this->request->getParam('propertyId'));
         } else {
-
             // Validate received data. Assume that all fields are required
-            $property = new Property($this->request->getParams());
-            if ($property->isValid()) {
-                $recordId = $this->dataMapper->saveProperty($property);
-                include APP_PATH . '/views/header.php';
-                include APP_PATH . '/views/add-property.php';
-                include APP_PATH . '/views/footer.php';
+            $this->view->property = new Property($this->request->getParams());
+            if ($this->view->property->isValid()) {
+                $this->view->recordId = $this->dataMapper->saveProperty($this->view->property);
             }
         }
     }
@@ -184,20 +169,22 @@ class SimpleController {
      * Here we handle AJAX call from the web
      */
     private function addSale() {
+
+        $this->view->enableLayout(FALSE);
+        $this->view->request = $this->request;
         if ($this->request->isPost()) {
             $historyArray = $this->request->getParams();
 //            $historyArray['saleDate'] = date('Y-m-d');
             $history = new SaleHistory($historyArray);
             if ($history->isValid()) {
                 try {
-                    $recordId = $this->dataMapper->addSale($history);
+                    $this->view->recordId = $this->dataMapper->addSale($history);
                 } catch (Exception $e) {
-                    header('Content-type: application/json');
                     header("HTTP/1.0 500 Server error");
-                    echo json_encode(array('error' => '1', 'errorMessage' => $e->getMessage(), 'message' => 'Couldnt save data to DB'));
+                    $this->view->json(array('error' => '1', 'errorMessage' => $e->getMessage(), 'message' => 'Couldnt save data to DB'));
                 }
-                if (isset($recordId)) {
-                    include APP_PATH . '/views/add-sale.php';
+                if (!isset($this->view->recordId)) {
+                    $this->view->doRender(FALSE);
                 }
             } else {
                 $invalidProps = $history->getInvalidProps();
@@ -205,34 +192,29 @@ class SimpleController {
                 foreach ($invalidProps as $prop) {
                     $errorMessage .= 'Field ' . $prop . ' is not set or invalid; ';
                 }
-                header('Content-type: application/json');
                 header("HTTP/1.0 500 Invalid input");
-                echo json_encode(array('error' => '1', 'errorMessage' => $errorMessage, 'message' => $errorMessage));
+                $this->view->json(array('error' => '1', 'errorMessage' => $errorMessage, 'message' => $errorMessage));
             }
         }
     }
 
     private function aboutPage() {
         session_destroy();
-        include APP_PATH . '/views/header.php';
-        include APP_PATH . '/views/about.php';
-        include APP_PATH . '/views/footer.php';
     }
 
     /**
      * This is default method. It is called if no valid route is found for requested action.
      */
-    private function indexPage() {
+    private function index() {
         $this->showPropertyList();
     }
 
     /**
      * Exceptions and errors representer.
      */
-    private function errorPage($message, $exception) {
-        include APP_PATH . '/views/header.php';
-        include APP_PATH . '/views/error.php';
-        include APP_PATH . '/views/footer.php';
+    private function errorPage() {
+        $this->view->message = $this->messages;
+        $this->view->exception = $this->exception;
     }
 
 }

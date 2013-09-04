@@ -21,7 +21,10 @@ class Router {
         if (isset($this->routes[$action])) {
             return $this->routes[$action];
         }
-        return 'indexPage';
+        if (empty($action)) {
+            return 'index';
+        }
+        return $action;
     }
 
     /**

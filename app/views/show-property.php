@@ -75,7 +75,7 @@
                         <label for="saleDate">Date</label>
                         <input class="form-control"type="text" name="saleDate" id="saleDate" placeholder="Enter date">
                     </div>
-                    <input type="hidden" id="propertyId" name ="propertyId" value=" <?php echo $property->propertyId; ?>">
+                    <input type="hidden" id="propertyId" name ="propertyId" value=" <?php echo $this->property->propertyId; ?>">
                 </form>
             </div>
             <div class="modal-footer">
@@ -86,25 +86,25 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php
-if (!isset($property)) {
+if (!isset($this->property)) {
     echo '<div class="alert alert-danger"><h3>No property found with that ID </h3></div>';
 } else {
     echo '<h3>Property details</h3>' . PHP_EOL;
     echo '<address>' . PHP_EOL;
-    echo $property->address . '<br>' . PHP_EOL;
-    echo $property->city . '<br>' . PHP_EOL;
-    echo $property->zip . '<br>' . PHP_EOL;
-    echo $property->state . '<br>' . PHP_EOL;
+    echo $this->property->address . '<br>' . PHP_EOL;
+    echo $this->property->city . '<br>' . PHP_EOL;
+    echo $this->property->zip . '<br>' . PHP_EOL;
+    echo $this->property->state . '<br>' . PHP_EOL;
     echo '</address>' . PHP_EOL;
     echo '<button class="btn btn-primary" onClick="$(\'#sale-form\').modal(\'show\');">Add sale date</button>' . PHP_EOL;
-    if (!$property->isValid('saleHistory')) {
-        echo '<button class="btn btn-primary" onClick="editRecord(' . $property->propertyId . ')">Edit data</button>' . PHP_EOL;
-        echo '<button class="btn btn-danger" onClick="deleteRecord(' . $property->propertyId . ')">Delete this record</button>' . PHP_EOL;
+    if (!$this->property->isValid('saleHistory')) {
+        echo '<button class="btn btn-primary" onClick="editRecord(' . $this->property->propertyId . ')">Edit data</button>' . PHP_EOL;
+        echo '<button class="btn btn-danger" onClick="deleteRecord(' . $this->property->propertyId . ')">Delete this record</button>' . PHP_EOL;
     }
     echo '<h4>Sale history</h4>' . PHP_EOL;
 
 
-    if (!$property->isValid('saleHistory')) {
+    if (!$this->property->isValid('saleHistory')) {
         $classTable = ' hide ';
         $classNoHistory = '';
     } else {
@@ -118,8 +118,8 @@ if (!isset($property)) {
     echo '<table id="history" class="table table-hover table-striped '.$classTable.' ">' . PHP_EOL;
     echo '<th>Sale Date</th><th>Sale Price</th>';
 
-    if ($property->isValid('saleHistory')) {
-        foreach ($property->saleHistory as $history) {
+    if ($this->property->isValid('saleHistory')) {
+        foreach ($this->property->saleHistory as $history) {
             echo '<tr><td>' . $history->saleDate . '</td><td>' . number_format($history->salePrice, 2) . '</td></tr>' . PHP_EOL;
         }
     }
