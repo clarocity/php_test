@@ -26,7 +26,7 @@ class Property {
     public function toArray() {
         $output = array();
         foreach ($this as $key => $value) {
-            if (('saleHistory' != $key) && !empty($value)) $output[':' .$key] = $value;
+            if (('saleHistory' != $key) && !empty($value)) $output[':' .$key] = htmlspecialchars ($value);
         }
         return $output;
     }
