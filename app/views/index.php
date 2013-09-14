@@ -44,7 +44,7 @@
         <div class="col-lg-4 col-lg-offset-4 search">
             <form role="form" method="post" action="/search" class="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="search" name="search" value ="<?php echo $this->search; ?>" placeholder="Search by City, Address, ZIP or State" data-toggle="tooltip" data-placement="left" data-original-title="Search will return any matching results for any field (address, city, zip or state)">
+                    <input type="text" class="form-control" id="search" name="search" value ="<?php echo $this->search; ?>" placeholder="Search by City, Address, ZIP or State" data-toggle="tooltip" data-placement="left" data-original-title="Search will return any matching results for any field (address, city, zip or state). Search is case insensitive, doesn't search for special characters, only whole words/numbers match.">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                     </span>

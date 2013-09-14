@@ -88,7 +88,7 @@ class SimpleController {
         }
 
         if ($this->request->getParam('search')) {
-            $filter['search'][] = $this->request->getParam('search');
+            $filter['search'][] = htmlentities($this->request->getParam('search'));
             $this->view->search = $this->request->getParam('search');
         }
 

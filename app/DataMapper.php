@@ -93,6 +93,7 @@ class DataMapper {
                 $order .= $filter['order']['direction'];
             }
         }
+
         return array('where' => $where . $order . $limit, 'whereArray' => $whereArray);
     }
 
