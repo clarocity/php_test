@@ -64,13 +64,21 @@ class DataMapper {
         $order = '';
         $whereArray = array();
         if (is_array($filter)) {
-            if (isset($filter['where'])) {
+
+            if (isset($filter['search'])) {
                 $where = ' WHERE 1=1 ';
-                foreach ($filter['where'] as $column => $value) {
-                    $where .= ' AND ' . (($table) ? $table . '.' : '') . $column . ' = :' . $column;
-                    $whereArray[':' . $column] = $value;
+                 foreach ($filter['search'] as $key => $value) {
+                    $where .= 'AND ( LOWER(city) REGEXP :city' . $key . ' ';
+                    $where .= ' OR zip REGEXP :zip' . $key . ' ';
+                    $where .= ' OR LOWER(address) REGEXP :address' . $key . '  ';
+                    $where .= ' OR LOWER(state) REGEXP :state' . $key . ' ) ';
+                    $whereArray[':city' . $key] = '[[:<:]]' . strtolower($value) . '[[:>:]]';
+                    $whereArray[':zip' . $key] = '[[:<:]]' . strtolower($value) . '[[:>:]]';
+                    $whereArray[':address' . $key] ='[[:<:]]' . strtolower($value) . '[[:>:]]';
+                    $whereArray[':state' . $key] = '[[:<:]]' . strtolower($value) . '[[:>:]]';
                 }
             }
+            
             if (isset($filter['limit'])) {
                 $limit = ' LIMIT ' . $filter['limit']['position'] . ', ' . $filter['limit']['count'];
             }
@@ -85,7 +93,7 @@ class DataMapper {
                 $order .= $filter['order']['direction'];
             }
         }
-        return $where . $order . $limit;
+        return array('where' => $where . $order . $limit, 'whereArray' => $whereArray);
     }
 
     /**
@@ -95,13 +103,8 @@ class DataMapper {
      * @return type
      */
     public function getProperties($filter = NULL) {
-        $where = $this->prepareFilter($filter, 'property');
-        $whereArray = array();
-        if (isset($filter['where'])) {
-            foreach ($filter['where'] as $column => $value) {
-                $whereArray[':' . $column] = $value;
-            }
-        }
+        $filterReady = $this->prepareFilter($filter, 'property');
+
         $query = "SELECT property.propertyId,
                         property.address,
                         property.zip,
@@ -123,9 +126,9 @@ class DataMapper {
                              ) ph_ 
                              ON ph_.propertyId = sale_history.propertyId AND ph_.saleDate = sale_history.saleDate
                         ) ph 
-                       ON property.propertyId = ph.propertyId" . $where;
+                       ON property.propertyId = ph.propertyId" . $filterReady['where'];
         $stmt = $this->db->prepare($query);
-        $result = $stmt->execute($whereArray);
+        $result = $stmt->execute($filterReady['whereArray']);
         $properties = array();
         while ($row = $stmt->fetch()) {
             $history = new SaleHistory($row);
@@ -219,16 +222,10 @@ class DataMapper {
     public function getNumberOfRecords($table, $filter = NULL) {
         // we will count id's, thats good for DB performance
         $idName = $table . 'Id';
-        $where = $this->prepareFilter($filter, $table);
-        $whereArray = array();
-        if (isset($filter['where'])) {
-            foreach ($filter['where'] as $column => $value) {
-                $whereArray[':' . $column] = $value;
-            }
-        }
-        $query = 'SELECT count(' . $idName . ') FROM ' . $table . $where;
+        $filterReady = $this->prepareFilter($filter, $table);
+        $query = 'SELECT count(' . $idName . ') FROM ' . $table . $filterReady['where'];
         $stmt = $this->db->prepare($query);
-        $res = $stmt->execute($whereArray);
+        $res = $stmt->execute($filterReady['whereArray']);
         return $stmt->fetchColumn();
     }
 

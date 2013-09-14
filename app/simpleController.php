@@ -77,35 +77,19 @@ class SimpleController {
      */
     private function showPropertyList($filter = null) {
         $this->view->setView('index.php');
-        if ('search' == $this->request->getAction() && $this->request->getParam('delete')) {
-            unset($_SESSION['filter']['where'][$this->request->getParam('delete')]);
+        if ('search' == $this->request->getAction() && null != $this->request->getParam('delete')) {
+            unset($_SESSION['filter']['search'][(int)$this->request->getParam('delete')]);
+            $this->view->json($_SESSION);
         }
 
         $filter = (isset($_SESSION['filter'])) ? $_SESSION['filter'] : array();
+        if (isset($_SESSION['filter']['search'])) {
+            $filter['search'] = $_SESSION['filter']['search'];
+        }
 
-        $this->view->search = '';
-        // Do we have search request?
         if ($this->request->getParam('search')) {
+            $filter['search'][] = $this->request->getParam('search');
             $this->view->search = $this->request->getParam('search');
-            if (is_numeric($this->view->search) && 5 == strlen($this->view->search)) {
-                // ZIP
-                $filter['where']['zip'] = $this->view->search;
-            }
-
-            if (preg_match('/^([a-zA-Z\s]+)$/', $this->view->search) && 2 < strlen($this->view->search)) {
-                // City
-                $filter['where']['city'] = $this->view->search;
-            }
-
-            if (preg_match('/[A-Z]+/', $this->view->search) && 2 == strlen($this->view->search)) {
-                // State
-                $filter['where']['state'] = $this->view->search;
-            }
-
-            if (preg_match('/(\d+)\s([A-Z][a-z]+)/', $this->view->search)) {
-                // Address
-                $filter['where']['address'] = $this->view->search;
-            }
         }
 
         // Store filter data for complex search

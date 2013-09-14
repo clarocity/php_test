@@ -98,6 +98,7 @@ class View {
     public function json($json) {
         header('Content-type: application/json');
         echo json_encode($json);
+        exit;
     }
 
     /**
@@ -120,6 +121,15 @@ class View {
         if ($output && $this->doRender) {
             echo $this->content;
         }
+    }
+
+    public function highlightText($haystack, $needles, $format = '') {
+        if (!empty($needles)) {
+            foreach ($needles as $needle) {
+                $haystack = preg_replace("/\b($needle)\b/i", "<span style='background-color: yellow'>\${1}</span>", $haystack);
+            }
+        }
+        return $haystack;
     }
 
 }

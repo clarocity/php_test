@@ -8,11 +8,21 @@
         // Deletes label with search word from panel
         // Also requests removal of this word from session
         $.get('/search/delete/'+word)
+        .fail(
+        function(e, ts, et)
+        {
+            console.log(ts);
+            console.log(e);
+            console.log(et);
+        })
         .done(function(data){
-            $("#"+word).remove();
+ //           $("#search"+word).remove();
             window.location.replace('/');
         });
     }
+    $(document).ready(function(){
+        $("#search").tooltip();
+    });
 </script>
 <style>
     .search {
@@ -34,14 +44,14 @@
         <div class="col-lg-4 col-lg-offset-4 search">
             <form role="form" method="post" action="/search" class="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="search" name="search" value ="<?php echo $this->search; ?>" placeholder="Search by City, Address, ZIP or State">
+                    <input type="text" class="form-control" id="search" name="search" value ="<?php echo $this->search; ?>" placeholder="Search by City, Address, ZIP or State" data-toggle="tooltip" data-placement="left" data-original-title="Search will return any matching results for any field (address, city, zip or state)">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div><!-- /input-group -->
             </form>
             <?php
-            if (!empty($_SESSION['filter']['where'])) {
+            if (!empty($_SESSION['filter']['search'])) {
                 ?>
                 <!-- Panel with search keywords used to filter records -->
                 <div class="panel panel-default">
@@ -50,8 +60,8 @@
                     </div>
                     <div class="panel-body">
                         <?php
-                        foreach ($_SESSION['filter']['where'] as $key => $value) {
-                            echo '<span class="label label-warning search-words" id="' . $key . '"><a href="javascript:deleteSearchWord(\'' . $key . '\')">&times</a> ' . $key . ': ' . $value . '</span>' . PHP_EOL;
+                        foreach ($_SESSION['filter']['search'] as $key => $value) {
+                            echo '<span class="label label-warning search-words" id="search' . $key . '"><a href="javascript:deleteSearchWord(\'' . $key . '\')">&times</a> ' . $value . '</span>' . PHP_EOL;
                         }
                         ?>
                     </div><!-- /.panel-body-->
@@ -72,15 +82,19 @@
                     <th>Last sale price</th>
                 </tr>
                 <?php
+                $search = '';
+                if (isset($_SESSION['filter']['search'])) {
+                    $search = $_SESSION['filter']['search'];
+                }
                 foreach ($this->propertyList as $row) {
                     if ($row->saleHistory) {
                         $saleHistory = $row->saleHistory;
                     }
                     echo '<tr onClick = "showProperty(' . $row->propertyId . ')">' .
-                    '<td>' . $row->address . '</td>' .
-                    '<td>' . $row->city . '</td>' .
-                    '<td>' . $row->zip . '</td>' .
-                    '<td>' . $row->state . '</td>' .
+                    '<td>' . $this->highlightText($row->address, $search) . '</td>' .
+                    '<td>' . $this->highlightText($row->city, $search) . '</td>' .
+                    '<td>' . $this->highlightText($row->zip, $search) . '</td>' .
+                    '<td>' . $this->highlightText($row->state, $search) . '</td>' .
                     '<td>' . (($saleHistory[0]->saleDate) ? $saleHistory[0]->saleDate : 'No data') . '</td>' .
                     '<td>' . (($saleHistory[0]->salePrice) ? number_format($saleHistory[0]->salePrice, 2) : 'No data') . '</td></tr>' . PHP_EOL;
                 }
