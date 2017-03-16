@@ -1,4 +1,4 @@
-##Valuation Vision PHP Test Requirements
+## Valuation Vision PHP Test Requirements
 
  Build a Basic Application demonstrating the use of the following: 
  
@@ -10,13 +10,14 @@
  - Use of a CSS framework ( Bootstrap )
  - Any other pizazz you want to add would be acceptable to show your affinity for such things that you enjoy when developing.
 	
-##Instructions :
+## Instructions :
  
  - Fork this repository and submit a Pull Request once you complete the tasks, we will then review and let you know what we think.
  - Add a Markdown file named profile.md with links to any other work you would like us to review (GitHub Repos, side project websites, etc)
  
 =======
-##Project Data
+
+## Project Data
 
 **Each property will have zero or more sales of that property**
 
