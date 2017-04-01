@@ -1,7 +1,4 @@
 <?php
-
-// Sat April 1 - I'm working on this code right now. 
-
 // Start a session to handle CSRF
 session_start();
 
@@ -12,7 +9,7 @@ include $_SERVER["DOCUMENT_ROOT"].'/classes/property.php';
 include $_SERVER["DOCUMENT_ROOT"].'/classes/sale.php';
 
 // Generate a CSRF token
-// See Property->insert();
+// See Property->insert_record();
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
@@ -32,6 +29,8 @@ if (empty($_SESSION['second_token'])) {
 // Sales class extends Property for proper OOP design
 // Added jQuery validation and looks pretty with bootstrap. /js/validate/
 // Small views cleanup
+// Added jQuery Datepicker
+// Moved CRUD be more oop...
 
 /*
 DROP TABLE IF EXISTS `property`;
