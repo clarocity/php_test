@@ -3,7 +3,7 @@
 /**
  * Class DB
  * Connect to the mysql database using a singleton class
- * $this->db = DB::get_db();
+ * $this->db = DB::connection();
  */
 
 class DB
