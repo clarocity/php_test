@@ -8,28 +8,45 @@ class Sale extends Property
     protected $property_id;
     protected $sale_date;
     protected $sale_price;
+    protected $action;
 
     /**
      * Sale constructor
-     *
      * @param $property
      */
     public function __construct($property)
     {
-        if (isset($property)) {
-            foreach ($property as $key => $value) {
-                $this->$key = $value;
-            }
+        $this->make_globals($property);
+        if ($this->property_id) $this->isNumeric($this->property_id);
+        if ($this->action == 'add') $this->insert_sale();
+    }
+
+    /**
+     * Write $property to $this
+     * I use this to pass in $_GET or $_POST to the obj
+     * @param $property
+     */
+    public function make_globals($property) {
+        foreach ($property as $key => $value) {
+            $this->$key = $value;
         }
     }
 
     /**
+     * Insert Sale Wrapper
+     */
+    public function insert_sale() {
+        $this->insert_record();
+        header('Location: view.php?property_id='.$_POST['property_id']);
+        exit;
+    }
+
+    /**
      * Insert sale using a prepared statement
-     *
      * @return array
      * @throws Exception
      */
-    public function insert()
+    public function insert_record()
     {
             $stmt = DB::connection()->prepare("INSERT INTO property_sales (property_id, sale_date, sale_price) VALUES (?, ?, ?)");
 
@@ -44,7 +61,6 @@ class Sale extends Property
 
     /**
      * Get all property sales
-     *
      * @return array
      * @throws Exception
      */

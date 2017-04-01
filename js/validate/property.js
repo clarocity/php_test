@@ -12,8 +12,7 @@ $( document ).ready(function() {
                 required: true
             },
             state: {
-                minlength: 2,
-                maxlength: 2,
+                SelectName: { valueNotEquals: "Select Sate" },
                 required: true
             },
             zip: {

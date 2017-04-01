@@ -1,4 +1,6 @@
 $( document ).ready(function() {
+    $( "#sale_date" ).datepicker({ dateFormat: 'yy-mm-dd' });
+
     $('#sales_form').validate({
         rules: {
             sale_date: {

@@ -13,6 +13,7 @@ class Property
     protected $zip;
     protected $csrf_token;
     protected $token;
+    protected $action;
 
     /**
      * Property constructor
@@ -21,9 +22,64 @@ class Property
      */
     public function __construct($property)
     {
+        $this->make_globals($property);
+        if ($this->property_id) $this->isNumeric($this->property_id);
+        if ($this->action == 'add') $this->insert_property();
+        if ($this->action == 'modify') $this->modify_property();
+        if ($this->action == 'delete') $this->delete_property();
+    }
+
+    /**
+     * Write $property to $this
+     * @param $property
+     */
+    public function make_globals($property) {
         foreach ($property as $key => $value) {
             $this->$key = $value;
         }
+    }
+
+    /**
+     * Insert Property Wrapper
+     */
+    public function insert_property() {
+        $this->property_id = $this->insert_record();
+        header('Location: /property/view.php?property_id='.$this->property_id.'&added=true');
+        exit;
+    }
+
+    /**
+     * Delete Property Wrapper
+     */
+    public function delete_property() {
+        $this->delete_record();
+        header('Location: /property?deleted=true');
+        exit;
+    }
+
+    /**
+     * Modify Property Wrapper
+     */
+    public function modify_property() {
+        $this->modify_record();
+    }
+
+    /**
+     * Ensure $this->property_id is numeric
+     * @throws Exception
+     */
+    public function isNumeric($property_id) {
+        if (!is_numeric($property_id)) {
+            throw new Exception("Property ID needs to be numeric.");
+        }
+    }
+
+    /**
+     * Ensure the property is valid
+     * @return mixed
+     */
+    public function isValid() {
+        return $this->property_valid;
     }
 
     /**
@@ -49,15 +105,11 @@ class Property
             $stmt->close();
     }
 
-    public function isValid() {
-        return $this->property_valid;
-    }
-
     /**
      * Insert property
      * @throws Exception
      */
-    public function insert()
+    public function insert_record()
     {
             $this->security('/add.php');
             $stmt = DB::connection()->prepare("INSERT INTO property (address, city, state, zip) VALUES (?, ?, ?, ?)");
@@ -77,7 +129,7 @@ class Property
      * Modify property
      * @throws Exception
      */
-    public function modify()
+    public function modify_record()
     {
             $this->security('/modify.php');
             $stmt = DB::connection()->prepare("UPDATE property SET address = ?, city = ?, state = ?, zip = ? WHERE id = ?");
@@ -95,7 +147,7 @@ class Property
      * Delete property
      * @throws Exception
      */
-    public function delete()
+    public function delete_record()
     {
             $this->security('/view.php');
             $stmt = DB::connection()->prepare("DELETE FROM property WHERE id = ?");
@@ -131,6 +183,16 @@ class Property
         }
     }
 
+    /**
+     * Get sales for a property
+     *
+     * @return array
+     */
+    public function get_property_sales() {
+        $sale_obj = new Sale($_GET);
+        $sales = $sale_obj->get_property_sales();
+        return $sales;
+    }
     /**
      * Get the id of the property
      *
