@@ -1,4 +1,7 @@
 <?php
+
+// Sat April 1 - I'm working on this code right now. 
+
 // Start a session to handle CSRF
 session_start();
 
