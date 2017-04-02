@@ -31,6 +31,7 @@ if (empty($_SESSION['second_token'])) {
 // Small views cleanup
 // Added jQuery Datepicker
 // Moved CRUD be more oop...
+// Added pagination
 
 /*
 DROP TABLE IF EXISTS `property`;
