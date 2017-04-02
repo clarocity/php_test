@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Sale
+ * Sale Class
  */
 class Sale extends Property
 {

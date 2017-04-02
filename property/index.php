@@ -25,7 +25,9 @@
         </thead>
         <tbody>
         <?php
-            foreach (Properties::get_properties() as $row) {
+        $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+        $results = Properties::get_properties($page);
+            foreach ($results['results'] as $row) {
                 echo '<tr>';
                 echo '<td>'.$row['id'].'</td>';
                 echo '<td><a href="view.php?property_id='.$row['id'].'">'.$row['address'].'</a></td>';
@@ -39,4 +41,14 @@
         ?>
         </tbody>
     </table>
+
+    <h5><?php echo $results['ttl_props'];?> Properties</h5>
+    <ul class="pagination" style="margin: 0px;">
+        <?php
+            for ($i = 1; $i <= $results['ttl_pages']; $i++) {
+            echo '<li '.(($page==$i)?'class="active"':"").'><a href="?page='.$i.'">'.$i.'</a></li>';
+        }
+        ?>
+    </ul>
+
 <?php include '../layout/footer.php';?>

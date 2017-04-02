@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Property
+ * Property Class
  */
 class Property
 {
@@ -182,6 +182,7 @@ class Property
             die("Cross Site Scripting Detected");
         }
     }
+
 
     /**
      * Get sales for a property
