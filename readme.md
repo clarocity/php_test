@@ -40,3 +40,9 @@ _Property Sales Table Required Columns_
 		<td>Sale Price</td>
 	</tr>
 </table>
+
+
+![Alt text](/images/Screanshot.png?raw=true "Screanshot")
+![Alt text](/images/Screanshot1.png?raw=true "Screanshot")
+![Alt text](/images/Screanshot2.png?raw=true "Screanshot")
+![Alt text](/images/Screanshot3.png?raw=true "Screanshot")
