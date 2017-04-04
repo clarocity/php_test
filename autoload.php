@@ -10,13 +10,13 @@ include $_SERVER["DOCUMENT_ROOT"].'/classes/sale.php';
 
 // Generate a CSRF token
 // See Property->insert_record();
-if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(random_bytes(32));
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
 // Create a second token for hash_hmac() congruent operation
-if (empty($_SESSION['second_token'])) {
-    $_SESSION['second_token'] = bin2hex(random_bytes(32));
+if (empty($_SESSION['csrf_second_token'])) {
+    $_SESSION['csrf_second_token'] = bin2hex(random_bytes(32));
 }
 
 // CHANGE LOG
@@ -31,7 +31,6 @@ if (empty($_SESSION['second_token'])) {
 // Small views cleanup
 // Added jQuery Datepicker
 // Moved CRUD be more oop...
-// Added pagination
 
 /*
 DROP TABLE IF EXISTS `property`;

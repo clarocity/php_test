@@ -16,8 +16,8 @@
 
     <form class="form-horizontal" method="post" action="add.php">
         <input type="hidden" name="action" value="add">
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
-        <input type="hidden" name="token" value="<?php echo hash_hmac('sha256', '/add.php', $_SESSION['second_token']); ?>" />
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+        <input type="hidden" name="token" value="<?php echo hash_hmac('sha256', '/add.php', $_SESSION['csrf_second_token']); ?>" />
         <fieldset>
             <legend>Add Property</legend>
             <div class="form-group">

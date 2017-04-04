@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Properties Class
  */

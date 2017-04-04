@@ -169,14 +169,14 @@ class Property
     private function security($page)
     {
         // Ensure form CSRF token equals session CSRF token
-        if (!hash_equals($_SESSION['token'], $this->csrf_token)) {
+        if (!hash_equals($_SESSION['csrf_token'], $this->csrf_token)) {
             die("Cross Site Scripting Detected");
         }
 
         // Generate a keyed hash value using the HMAC method for per form lock down
         // Restrict tokens to only be available for a particular form
         // https://secure.php.net/hash_hmac
-        $hash = hash_hmac('sha256', $page, $_SESSION['second_token']);
+        $hash = hash_hmac('sha256', $page, $_SESSION['csrf_second_token']);
         if (!hash_equals($hash, $this->token)) {
             die("Cross Site Scripting Detected");
         }

@@ -31,8 +31,8 @@
     <form class="form-horizontal" method="post" action="modify.php">
         <a href="modify.php?property_id=<?php echo $property_obj->get_id();?>" title="Edit Property" class="btn btn-primary btn-lg" role="button"><i class="fa fa-pencil fa-fw" style="color: #ffffff;"></i></a>
         <input type="hidden" name="action" value="delete">
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
-        <input type="hidden" name="token" value="<?php echo hash_hmac('sha256', '/view.php', $_SESSION['second_token']); ?>" />
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+        <input type="hidden" name="token" value="<?php echo hash_hmac('sha256', '/view.php', $_SESSION['csrf_second_token']); ?>" />
         <input type="hidden" name="property_id" value="<?=$_GET['property_id'];?>">
         <button type="submit" class="btn btn-danger btn-lg" title="Delete Property"><i class="fa fa-trash" style="color: #ffffff;"></i></button>
     </form>
@@ -59,7 +59,7 @@
     </table>
 
     <form class="form-horizontal" method="post" action="view.php?property_id=<?=$_GET['property_id'];?>" id="sales_form">
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <input type="hidden" name="property_id" value="<?=$_GET['property_id'];?>">
         <input type="hidden" name="action" value="add">
         <fieldset>

@@ -18,8 +18,8 @@
     <?php if ($_POST['property_id']) { ?><div class="alert alert-dismissible alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Property Modified!</strong> <br><a href="/property/view.php?property_id=<?php echo $property->get_id();?>"><button type="button" class="btn btn-success btn-xs">View Property</button></a></div><?php } ?>
 
     <form class="form-horizontal" method="post" action="modify.php?property_id=<?php echo $property->get_id();?>">
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
-        <input type="hidden" name="token" value="<?php echo hash_hmac('sha256', '/modify.php', $_SESSION['second_token']); ?>" />
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+        <input type="hidden" name="token" value="<?php echo hash_hmac('sha256', '/modify.php', $_SESSION['csrf_second_token']); ?>" />
         <input type="hidden" name="property_id" value="<?php echo $property->get_id();?>">
         <input type="hidden" name="action" value="modify">
         <fieldset>
