@@ -26,7 +26,7 @@ class Sale extends Property
      * I use this to pass in $_GET or $_POST to the obj
      * @param $property
      */
-    public function make_globals($property) {
+    private function make_globals($property) {
         foreach ($property as $key => $value) {
             $this->$key = $value;
         }
@@ -35,7 +35,7 @@ class Sale extends Property
     /**
      * Insert Sale Wrapper
      */
-    public function insert_sale() {
+    private function insert_sale() {
         $this->insert_record();
         header('Location: view.php?property_id='.$_POST['property_id']);
         exit;
@@ -46,7 +46,7 @@ class Sale extends Property
      * @return array
      * @throws Exception
      */
-    public function insert_record()
+    private function insert_record()
     {
             $stmt = DB::connection()->prepare("INSERT INTO property_sales (property_id, sale_date, sale_price) VALUES (?, ?, ?)");
 

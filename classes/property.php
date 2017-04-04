@@ -33,7 +33,7 @@ class Property
      * Write $property to $this
      * @param $property
      */
-    public function make_globals($property) {
+    private function make_globals($property) {
         foreach ($property as $key => $value) {
             $this->$key = $value;
         }
@@ -42,7 +42,7 @@ class Property
     /**
      * Insert Property Wrapper
      */
-    public function insert_property() {
+    private function insert_property() {
         $this->property_id = $this->insert_record();
         header('Location: /property/view.php?property_id='.$this->property_id.'&added=true');
         exit;
@@ -51,7 +51,7 @@ class Property
     /**
      * Delete Property Wrapper
      */
-    public function delete_property() {
+    private function delete_property() {
         $this->delete_record();
         header('Location: /property?deleted=true');
         exit;
@@ -60,7 +60,7 @@ class Property
     /**
      * Modify Property Wrapper
      */
-    public function modify_property() {
+    private function modify_property() {
         $this->modify_record();
     }
 
@@ -68,7 +68,7 @@ class Property
      * Ensure $this->property_id is numeric
      * @throws Exception
      */
-    public function isNumeric($property_id) {
+    protected function isNumeric($property_id) {
         if (!is_numeric($property_id)) {
             throw new Exception("Property ID needs to be numeric.");
         }
@@ -109,7 +109,7 @@ class Property
      * Insert property
      * @throws Exception
      */
-    public function insert_record()
+    private function insert_record()
     {
             $this->security('/add.php');
             $stmt = DB::connection()->prepare("INSERT INTO property (address, city, state, zip) VALUES (?, ?, ?, ?)");
@@ -129,7 +129,7 @@ class Property
      * Modify property
      * @throws Exception
      */
-    public function modify_record()
+    private function modify_record()
     {
             $this->security('/modify.php');
             $stmt = DB::connection()->prepare("UPDATE property SET address = ?, city = ?, state = ?, zip = ? WHERE id = ?");
@@ -147,7 +147,7 @@ class Property
      * Delete property
      * @throws Exception
      */
-    public function delete_record()
+    private function delete_record()
     {
             $this->security('/view.php');
             $stmt = DB::connection()->prepare("DELETE FROM property WHERE id = ?");
@@ -167,7 +167,7 @@ class Property
      * @param $page - url of form page
      * @throws Exception
      */
-    public function security($page)
+    private function security($page)
     {
         // Ensure form CSRF token equals session CSRF token
         if (!hash_equals($_SESSION['token'], $this->csrf_token)) {
