@@ -16,20 +16,13 @@ class Sale extends Property
      */
     public function __construct($property)
     {
-        $this->make_globals($property);
+        $this->property_id = $property['property_id'];
+        $this->sale_date = $property['sale_date'];
+        $this->sale_price = $property['sale_price'];
+        $this->action = $property['action'];
+
         if ($this->property_id) $this->isNumeric($this->property_id);
         if ($this->action == 'add') $this->insert_sale();
-    }
-
-    /**
-     * Write $property to $this
-     * I use this to pass in $_GET or $_POST to the obj
-     * @param $property
-     */
-    private function make_globals($property) {
-        foreach ($property as $key => $value) {
-            $this->$key = $value;
-        }
     }
 
     /**

@@ -22,21 +22,20 @@ class Property
      */
     public function __construct($property)
     {
-        $this->make_globals($property);
+        $this->property_id = $property['property_id'];
+        $this->property_valid = $property['property_valid'];
+        $this->address = $property['address'];
+        $this->city = $property['city'];
+        $this->state = $property['state'];
+        $this->zip = $property['zip'];
+        $this->csrf_token = $property['csrf_token'];
+        $this->token = $property['token'];
+        $this->action = $property['action'];
+
         if ($this->property_id) $this->isNumeric($this->property_id);
         if ($this->action == 'add') $this->insert_property();
         if ($this->action == 'modify') $this->modify_property();
         if ($this->action == 'delete') $this->delete_property();
-    }
-
-    /**
-     * Write $property to $this
-     * @param $property
-     */
-    private function make_globals($property) {
-        foreach ($property as $key => $value) {
-            $this->$key = $value;
-        }
     }
 
     /**
