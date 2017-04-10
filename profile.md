@@ -3,10 +3,10 @@
 - Project by Elise Straub
 
 ### Project Details
-- LAMP Stack
+- Developed with LAMP Stack
+- Demo uses Heroku and ClearDB
 - JavaScript Library: jQuery
 - CSS Framework: Bootstrap
-- 
 
 ### Helpful Resources
 - [No Framework Tutorial](https://github.com/PatrickLouys/no-framework-tutorial)
