@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $propertyListView->output();
     }
     echo "</div>";
-    echo "<script src='javascript/ajaxaddform.js'></script>";    
+    $pageEdit = false;
     include "layout/footer.php";
 } else {
     echo "Error occurred.";

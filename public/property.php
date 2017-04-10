@@ -27,8 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
         echo $propView->output();
         
-        echo "</div>";    
-        echo "<script src='javascript/ajaxeditform.js'></script>"; 
+        echo "</div>";
+        $pageEdit = true;    
         include "layout/footer.php";
     } else {
         echo "error occurred";
