@@ -1,11 +1,5 @@
 <?php
-
-try {
-    require_once "dbprivate.php";
-    $db = new PDO($dsn, $user, $pass);
-} catch (Exception $e) {
-    $error = $e->getMessage();
-}
-
+    $dsn = "mysql:host={getenv('CLEARDB_HOST')};dbname={getenv('CLEARDB_DBNAME')}";
+    $db = new PDO($dsn, getenv('CLEARDB_USER'), getenv('CLEARDB_PASS'));
 ?>
 
