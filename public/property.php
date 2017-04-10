@@ -1,6 +1,3 @@
-<?php // for development only
-$template_css_file = "../public/css/styles.css?v=". filemtime("../public/css/styles.css");
-?>
 <?php 
 
 require_once "../app/db/dbconn.php";
@@ -31,10 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         echo $propView->output();
         
         echo "</div>";    
-
-        // for development only
-        $template_js_file = "javascript/ajaxsearchform.js?v=". filemtime("javascript/ajaxsearchform.js");
-        $template_jsadd_file = "javascript/ajaxeditform.js?v=". filemtime("javascript/ajaxeditform.js");
+        echo "<script src='javascript/ajaxeditform.js'></script>"; 
         include "layout/footer.php";
     } else {
         echo "error occurred";
