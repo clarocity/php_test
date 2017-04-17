@@ -1,2 +1,4 @@
 app/db/dbprivate.php
 vendor/*
+.php_cs.cache
+.vscode/*
