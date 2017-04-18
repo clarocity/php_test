@@ -1,5 +1,6 @@
 $(document).ready(function () {
-
+    $('#edit-form').toggle(false);
+    $('.message--delete').toggle(false);
     $('#edit-form').submit(function (event) {
         event.preventDefault();
         $.ajax({
@@ -27,6 +28,7 @@ $(document).ready(function () {
             })
             .done(function (data) {
                 $('.message--delete').html(data);
+                $('.message--delete').toggle(true);
             })
         }
     });

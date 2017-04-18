@@ -59,9 +59,9 @@ class Property {
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         if(count($result) > 0){
-            return "<div class='alert alert-warning' role='alert'>Property record deleted from database.</div>";
+            return "Property record deleted from database.";
         } else {
-            return "<div class='alert alert-danger' role='alert'>An error occurred.</div>";
+            return "An error occurred.";
         }
     }
 

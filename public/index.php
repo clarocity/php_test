@@ -11,15 +11,11 @@ require_once "../app/views/PropertyListView.php";
 $propertyList = new PropertyList($db);
 $propertyListController = new PropertyListController($propertyList);
 $propertyListView = new PropertyListView($propertyList);
+$newProp = new Property($db);
+$newPropController = new PropertyController($newProp);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $newProp = new Property($db);
-    $newPropController = new PropertyController($newProp);
-    $newPropController->addAllValues($_POST);
-    $propertyList->addProperty($newProp);
-
-} else if ($_SERVER['REQUEST_METHOD'] == 'GET'){ 
-    include "layout/head.php"; 
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    include "layout/head.php";
     echo "<div class=\"container container--main\">";
     // form
     $formHeading = "Add Form";
@@ -28,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $formId = "add-form";
     $formConvert = false;
     include "layout/ajaxform.php";
+
     if (isset($_GET["searchInput"]) && $_GET["searchInput"] !== "") { // searched
         if (isset($_GET["year"]) && $_GET["year"] === "2017") { // and filtered
             $propertyListController->filterYear($_GET["year"]);
@@ -39,10 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $propertyListController->search($_GET["searchInput"]);
         echo $propertyListView->output();
     }
+
     echo "</div>";
     $pageEdit = false;
     include "layout/footer.php";
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { //ajax
+    $newPropController->addAllValues($_POST);
+    $propertyList->addProperty($newProp);
 } else {
     echo "Error occurred.";
 }
-?>

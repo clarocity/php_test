@@ -13,10 +13,10 @@ class PropertyView {
         $html =  "<br/>";
         $html .=  "<h2>Property Details</h2>";
         $html .=  "<p>{$this->model}</p>";
-        $html .=  "<div class='btn-group justify-content-between'>";
-        $html .=  "<a class='btn btn-warning' id='edit-button'>Edit</a>";
-        $html .=  "<a class='btn btn-danger ml-1' id='delete-button'>Delete</a>";
-        $html .=  "<span class='message--delete'></span>";
+        $html .=  "<div class='btn-group'>";
+        $html .=  "<div class='btn btn-warning' id='edit-button'>Edit</div>";
+        $html .=  "<div class='btn btn-danger ml-1' id='delete-button'>Delete</div>";
+        $html .=  "<div class='btn btn-info ml-1 message--delete'></div>";
         $html .=  "</div>";
         $html .= "<hr/>";
         $html .= "<h3>Sale History</h3>";

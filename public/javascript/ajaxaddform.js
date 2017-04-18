@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    $('#add-form').toggle(false);
     $('#add-form').submit(function (event) {
         event.preventDefault();
         $.ajax({
@@ -14,12 +14,12 @@ $(document).ready(function () {
 
     $('#add-button').click(function (event) {
         event.preventDefault();
-        $('#add-form').toggle();
+        $('#add-form').toggle(true);
     });
 
     $('.close').click(function (event) {
         event.preventDefault();
-        $('#add-form').toggle();
+        $('#add-form').toggle(false);
     });
 
 
