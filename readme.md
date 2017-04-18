@@ -1,42 +1,20 @@
-## Valuation Vision PHP Test Requirements
+## First PHP Project
+- [Demo](https://murmuring-sea-35716.herokuapp.com/)
 
- Build a Basic Application demonstrating the use of the following: 
- 
- - Written MySQL queries using a JOIN or SUBQUERY
- - Some knowledge of OOP / OOD in PHP  
- - Some use of Javascript ( Whatever flavor you select )
- - Use of frameworks is frowned upon for this exercise
- - CRUD should be an objective as well
- - Use of a CSS framework ( Bootstrap )
- - Any other pizazz you want to add would be acceptable to show your affinity for such things that you enjoy when developing.
-	
-## Instructions :
- 
- - Fork this repository and submit a Pull Request once you complete the tasks, we will then review and let you know what we think.
- - Add a Markdown file named profile.md with links to any other work you would like us to review (GitHub Repos, side project websites, etc)
- 
-=======
+### Project Details
+- Developed with LAMP Stack
+- Demo uses Heroku and ClearDB
+- Tools and Libraries:
+  - JavaScript Library: jQuery
+  - CSS Framework: Bootstrap
+  - MySQL Workbench
+  - IDE: VS Code
+- MySQL tables:  
+  - properties: id, address, city state, zip
+  - sales: id, sale_date, sale_price, property_id
 
-## Project Data
-
-**Each property will have zero or more sales of that property**
-
-_Property Table Required Columns_
-
-<table>
-	<tr>
-		<td>address</td>
-		<td>city</td>
-		<td>state</td>
-		<td>ZIP</td>
-	</tr>
-</table>
-
-_Property Sales Table Required Columns_
-
-<table>
-	<tr>
-		<td>Sale Date</td>
-		<td>Sale Price</td>
-	</tr>
-</table>
+### Helpful Resources
+- [No Framework Tutorial](https://github.com/PatrickLouys/no-framework-tutorial)
+- [MVC in PHP](https://r.je/mvc-in-php.html)
+- [PHP Security Cheat Sheet](https://www.owasp.org/index.php/PHP_Security_Cheat_Sheet#Never_concatenate_or_interpolate_data_in_SQL)
+- [Purpose of a Controller](http://techiferous.com/2013/04/so-what-exactly-is-the-purpose-of-a-rails-controller/)
