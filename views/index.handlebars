@@ -1,6 +1,7 @@
 <h1>Time to Review Some Properties</h1>
 
-<h2>Add a New Property to the List!</h2>
+ <div class="row text-center">
+   <h2>Add a New Property to the List!</h2>
   <form action="/properties" method="POST">
     <input type="text" id="name" name="address" placeholder="Address">
     <input type="text" id="name" name="city" placeholder="City">
@@ -10,12 +11,19 @@
     <input type="text" id="name" name="sale_price" placeholder="Sale Price">
     <button type="submit" class="addPropertyButton">Submit</button>
   </form>
+ </div>
 
 <div id = "newProperty">
   <h2>Properties</h2>
   <h3>(Click on the property to remove it from the list)</h3>
-
       <table>
+        <col style="width:10%">
+        <col style="width:20%">
+        <col style="width:30%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
         <tr>
           <th>id</th>
           <th>Address</th> 
@@ -25,8 +33,17 @@
           <th>Sale Date</th>
           <th>Sale Price</th>
         </tr>
+        </table>
         {{#each properties}}
          {{#unless this.deleted}}
+       <table>
+          <col style="width:10%">
+          <col style="width:20%">
+          <col style="width:30%">
+          <col style="width:10%">
+          <col style="width:10%">
+          <col style="width:10%">
+          <col style="width:10%">
         <form action="/properties/{{this.id}}?_method=PUT" method="POST">
           <tr>
             <td>{{this.id}}</td>
