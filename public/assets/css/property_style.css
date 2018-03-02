@@ -1,0 +1,42 @@
+body {
+  background-image: url("../img/weather.png");
+}
+
+h1{
+  font-size: 50px;
+  font-family: 'Lobster', cursive;
+  text-align: center;
+}
+
+h2, h3, button, form{
+  font-family: 'Lobster', cursive;
+  text-align: center;
+}
+
+h3 {
+  font-family: 'Lobster', cursive;
+  text-align: center;
+  color: rgb(128, 135, 136);
+}
+
+button{
+  font-family: 'Lobster', cursive;
+  text-align: center;
+  font-size: 14px;
+}
+
+#name{
+  height:70px;
+  font-size:12pt;
+  font-family: 'Shadows Into Light Two', cursive;
+}
+
+img {
+  display: block;
+  margin: auto;
+  width: 30%;
+}
+
+table, th, td, tr {
+  border: 1px solid black;
+}
