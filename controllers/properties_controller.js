@@ -5,12 +5,7 @@ var router = express.Router();
 var property = require("../models/property.js");
 
 //creates routes and logic
-
-router.get("/", function(req,res){
-  res.redirect("/properties");
-});
-
-router.get("/properties", function(req, res) {
+router.get("/", function(req, res) {
   property.select(function(data) {
     var hbsObject = {
       properties: data
@@ -30,9 +25,9 @@ router.post("/properties", function(req, res) {
   });
 });
 
-router.put("/properties/update/:id", function(req, res) {
+router.put("/properties/:id", function(req, res) {
   property.update(req.params.id, function(){
-    res.redirect("/properties");
+    res.redirect("/");
   })
 });
 
@@ -40,7 +35,7 @@ router.delete("/properties/delete/:id", function(req, res){
   var condition = "id = " + req.params.id; 
   
   property.delete(condition, function(result) {
-    res.redirect("/properties");
+    res.redirect("/");
   });
 });
 //exports route for use in server.js
