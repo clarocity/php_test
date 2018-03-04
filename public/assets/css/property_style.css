@@ -1,65 +1,72 @@
-body {
-  /* background-color: rgb(203, 67, 78); */
+body{
   background-image: url("../img/weather.png");
+  font-family: 'Open Sans Condensed', sans-serif;
 }
 
 .jumbotron{
   background-image: url("../img/house2.jpg");
-  opacity: 0.75;
   background-size: cover;
+  clear: both;
+  height: 280px;
+}
 
+.jtext{
+  background: rgba(208, 218, 218, 0.6);
+  padding: 10px;
+  border-style: solid;
+  margin: 0 auto;
+  text-align: center;
 }
 
 h1{
-  font-size: 50px;
+  font-size: 70px;
   font-family: 'Anton', sans-serif;
   text-align: center;
 }
 
+.small-text{
+  font-size: 35px;
+  font-weight: bold;
+}
+.instructions{
+  font-size: 25px;
+  font-style: italic;
+}
+
 h2, h3, button, form{
-  font-family: 'Open Sans Condensed', sans-serif;
   text-align: center;
 }
 
-h3 {
-  font-family: 'Open Sans Condensed', sans-serif;
+h3{
   text-align: center;
   color: rgb(128, 135, 136);
 }
 
 button{
-  font-family: 'Open Sans Condensed', sans-serif;
   text-align: center;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 #name{
-  height:70px;
-  font-size:12pt;
-  font-family: 'Open Sans Condensed', sans-serif;
+  height: 60px;
+  width: 155px;
+  font-size: 15pt;
 }
 
-img {
-  display: block;
-  margin: auto;
-  width: 30%;
-}
-
- table {
-  font-family: 'Open Sans Condensed', sans-serif;
-  font-size: 15px;
+table{
+  font-size: 18px;
   border-collapse: collapse;
   width: 100%;
   table-layout: fixed;
-  background-color: rgb(255, 255, 255);
+  background: linear-gradient(rgb(255, 255, 255), rgba(163, 216, 240, 0.721), rgb(122, 185, 233));
 }
 
 thead{
-  background-color: rgb(34, 146, 171);
-
+  background-color: rgb(117, 179, 227);
+  font-size: 20px;
 }
 
-td, th {
+td, th{
   border: 1px solid rgb(0, 0, 0);
   text-align: left;
   padding: 5px;

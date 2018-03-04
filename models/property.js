@@ -3,26 +3,24 @@ var orm = require("../config/orm.js");
 
 //creates property object
 var property = {
-  //selects all property table entries
-  selectAll: function(cb){
-    orm.selectAll("properties", function (res){
+  //selects property table entries
+  select: function(cb){
+    orm.select("properties", function (res){
       cb(res);
     });
   },
-  insertOne: function(cols, vals, cb){
-    orm.insertOne("properties", cols, vals, function(res){
+  insert: function(cols, vals, cb){
+    orm.insert("properties", cols, vals, function(res){
       cb(res);
     });
   },
-  updateOne: function(objColVals, condition, cb){
-    orm.updateOne("properties", objColVals, condition, function(res){
+  update: function(objColVals, condition, cb){
+    orm.update("properties", objColVals, condition, function(res){
       cb(res);
     });
   },
-
-    //may need to edit this
-    deleteOne: function(condition, cb){
-      orm.deleteOne("properties", objColVals, condition, function(res){
+  delete: function(condition, cb){
+      orm.delete("properties", condition, function(res){
         cb(res);
       });
     }

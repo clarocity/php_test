@@ -30,7 +30,7 @@ function objToSql(ob){
 //creating ORM object to perform SQL queries
 var orm = {
   //returns all table entries
-  selectAll: function(tableInput, cb){
+  select: function(tableInput, cb){
     var queryString = "SELECT * FROM " + tableInput + ";";
     connection.query(queryString, function(err, result){
       if (err){
@@ -40,7 +40,7 @@ var orm = {
     });
   },
   //inserts a single table entry
-  insertOne: function(table, cols, vals, cb){
+  insert: function(table, cols, vals, cb){
     var queryString = "INSERT INTO " + table;
 
     queryString += " (";
@@ -59,7 +59,7 @@ var orm = {
     });
   },
   //updates a single table entry
-  updateOne: function(table, objColVals, condition, cb) {
+  update: function(table, objColVals, condition, cb) {
     var queryString = "UPDATE " + table;
 
     queryString += " SET ";
@@ -72,6 +72,20 @@ var orm = {
       if (err) {
         throw err;
       }
+      cb(result);
+    });
+  },
+  //deletes a single table entry
+  delete: function(table, condition, cb) {
+    var queryString = "DELETE FROM " + table;
+    queryString += " WHERE ";
+    queryString += condition;
+
+    connection.query(queryString, function(err, result) {
+      if (err) {
+        throw err;
+      }
+
       cb(result);
     });
   }

@@ -5,8 +5,13 @@ var router = express.Router();
 var property = require("../models/property.js");
 
 //creates routes and logic
-router.get("/", function(req, res) {
-  property.selectAll(function(data) {
+
+router.get("/", function(req,res){
+  res.redirect("/properties");
+});
+
+router.get("/properties", function(req, res) {
+  property.select(function(data) {
     var hbsObject = {
       properties: data
     };
@@ -16,7 +21,7 @@ router.get("/", function(req, res) {
 });
 
 router.post("/properties", function(req, res) {
-  property.insertOne([
+  property.insert([
     "address", "city", "state", "zip", "sale_date", "sale_price" 
   ], [
     req.body.address, req.body.city, req.body.state, req.body.zip, req.body.sale_date, req.body.sale_price
@@ -25,29 +30,19 @@ router.post("/properties", function(req, res) {
   });
 });
 
-router.put("/properties/:id", function(req, res) {
-  var condition = "id = " + req.params.id;
-
-  console.log("condition", condition);
-
-  property.updateOne({
-    deleted: true
-  }, condition, function(data) {
-    res.redirect("/");
-  });
+router.put("/properties/update/:id", function(req, res) {
+  property.update(req.params.id, function(){
+    res.redirect("/properties");
+  })
 });
 
-//need to edit
-// router.put("/properties/:id", function(req,res){
-//   var condition = "id " + req.params.id;
-//   console.log("condition", condition);
-
-//   property.updateOne({
-
-//   })
-// })
-
-
+router.delete("/properties/delete/:id", function(req, res){
+  var condition = "id = " + req.params.id; 
+  
+  property.delete(condition, function(result) {
+    res.redirect("/properties");
+  });
+});
 //exports route for use in server.js
 module.exports = router;
 
