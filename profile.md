@@ -19,3 +19,10 @@
 *This app is a flashcard command-line game.*
 
 **Github Repo:** https://github.com/annatly2/planets-and-candy-flashcards
+
+## Crystal Collector :gem:
+*In this Crystal Collectors game, users will be given a random Number Goal at the start of each game. There will be five different colored crystals containing a different random number (1-11). When users click on a crystal, they will gain a specific amount of points to their total points. Users can win the game by matching their total points to the Number Goal. If their total points exceed the Number Goal, then they will lose.*
+
+**Github Repo:** https://github.com/annatly2/crystal-collector
+
+**Live Website:** https://annatly2.github.io/crystal-collector/
