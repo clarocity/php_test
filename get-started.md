@@ -1,3 +1,6 @@
+# To view the live app go to:
+:house: https://clarocity-project.herokuapp.com/properties
+
 # To get started using this app on your local machine:
 
 1. Clone this git repository.
