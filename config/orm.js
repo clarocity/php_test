@@ -30,14 +30,23 @@ function objToSql(ob){
 //creating ORM object to perform SQL queries
 var orm = {
   //returns all table entries
-  select: function(tableInput, cb){
-    var queryString = "SELECT * FROM " + tableInput + ";";
-    connection.query(queryString, function(err, result){
-      if (err){
-        throw err;
+  select: function(cols, table, cb){
+    //check if cols is array
+    if(Array.isArray(cols)){
+      if(cols.length < 1){
+        return cb(new Error("cols was empty"), null);
       }
-      cb(result);
-    });
+      //concatenate values
+      var temp = "";
+      for(var i = 0; i < cols.length-1; i++){
+        temp += cols[i] + ", ";
+      }
+      temp+= cols[cols.length-1];
+    }
+
+
+    var queryString = "SELECT " + cols + " FROM " + table + ";";
+    connection.query(queryString, cb);
   },
   //inserts a single table entry
   insert: function(table, cols, vals, cb){
@@ -88,7 +97,12 @@ var orm = {
 
       cb(result);
     });
+  },
+
+  join: function(tableA, tableB, colA, colB){
+    return tableA + " JOIN " + tableB + " ON " + tableA + "." + colA + " = " + tableB + "." + colB;
   }
+
 };
 
 //exports the orm object for use in other modules

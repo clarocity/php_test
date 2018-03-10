@@ -14,8 +14,24 @@
       <input type="text" id="name" name="city" placeholder="City" required>
       <input type="text" id="name" name="state" placeholder="State" required>
       <input type="text" id="name" name="zip" placeholder="ZIP" required>
-      <input type="text" id="name" name="sale_date" placeholder="Sale Date (mm/dd/yy)" required>
-      <input type="text" id="name" name="sale_price" placeholder="Sale Price" required>
+      {{!-- <input type="text" id="name" name="sale_date" placeholder="Sale Date (mm/dd/yy)" required>
+      <input type="text" id="name" name="sale_price" placeholder="Sale Price" required> --}}
+    </div>
+    <button type="submit" class="addPropertyButton">Submit</button>
+  </form>
+ </div>
+
+  <div class="row text-center">
+   <h2 class = "instructions">Add some info about the sales of a property.</h2>
+  <form method="POST" action="/properties" class = "form-inline">
+    <div class = "form-group">
+      <select name="property_id" id = "property_dropdown">
+        {{#each properties}}
+        <option value = "{{this.property_id}}">{{this.address}}</option>
+         {{/each}}
+      </select>
+      <input type="text" name="sale_date" placeholder="Sale Date (mm/dd/yy)" required>
+      <input type="text" name="sale_price" placeholder="Sale Price" required>
     </div>
     <button type="submit" class="addPropertyButton">Submit</button>
   </form>
@@ -36,11 +52,11 @@
                 <th></th>
               </thead>
               </table>
-              {{#each properties}}
+              {{#each sales}}
             <table>
-              <form action="/properties/{{this.id}}?_method=PUT" method="POST">
+              <form action="/properties/{{this.property_id}}?_method=PUT" method="POST">
                 <tr>
-                  <td>{{this.id}}</td>
+                  <td>{{this.property_id}}</td>
                   <td>{{this.address}}</td>
                   <td>{{this.city}}</td> 
                   <td>{{this.state}}</td>

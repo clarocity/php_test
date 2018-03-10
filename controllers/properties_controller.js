@@ -11,22 +11,31 @@ router.get("/", function(req,res){
 });
 
 router.get("/properties", function(req, res) {
-  property.select(function(data) {
-    var hbsObject = {
-      properties: data
-    };
-    console.log(hbsObject);
-    res.render("index", hbsObject);
+  property.selectSalesInfo(function(err, salesData) {
+    if(err){
+      console.log(err);
+      return res.sendStatus(500);
+    }
+
+    property.selectProperties(function(err, propertyData){
+      if(err){
+        console.log(err);
+        return res.sendStatus(500);
+      }
+      var hbsObject = {
+        properties: propertyData,
+        sales: salesData
+      };
+      console.log(hbsObject);
+      res.render("index", hbsObject);
+    })
+
   });
 });
 
 router.post("/properties", function(req, res) {
-  property.insert([
-    "address", "city", "state", "zip", "sale_date", "sale_price" 
-  ], [
-    req.body.address, req.body.city, req.body.state, req.body.zip, req.body.sale_date, req.body.sale_price
-  ], function(data) {
-    res.redirect("/");
+  property.insertProperty(req.body, function(data) {
+    res.sendStatus(204);
   });
 });
 
