@@ -12,8 +12,6 @@ CREATE TABLE properties(
   PRIMARY KEY (property_id)
 );
 
-DROP TABLE IF EXISTS properties_sales;
-
 CREATE TABLE properties_sales(
   property_id INT NOT NULL,
   sale_id INT NOT NULL AUTO_INCREMENT,

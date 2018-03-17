@@ -35,20 +35,26 @@ router.get("/properties", function(req, res) {
 
 router.post("/properties", function(req, res) {
   property.insertProperty(req.body, function(data) {
-    res.sendStatus(204);
+    res.redirect("/properties");
   });
 });
 
-router.put("/properties/update/:id", function(req, res) {
+router.post("/sales", function(req,res){
+  property.insertSale(req.body, function(data){
+    res.redirect("/properties");
+  })
+})
+
+router.post("/properties/update/:id", function(req, res) {
   property.update(req.params.id, function(){
     res.redirect("/properties");
   })
 });
 
-router.delete("/properties/delete/:id", function(req, res){
-  var condition = "id = " + req.params.id; 
+router.post("/sales/delete/:id", function(req, res){
+  var sale_id = req.params.id; 
   
-  property.delete(condition, function(result) {
+  property.deleteSale(sale_id, function(result) {
     res.redirect("/properties");
   });
 });

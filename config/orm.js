@@ -29,21 +29,21 @@ function objToSql(ob){
 
 //creating ORM object to perform SQL queries
 var orm = {
-  //returns all table entries
+  //returns select table entries
   select: function(cols, table, cb){
     //check if cols is array
+    //if array is empty, then returns cb as null
     if(Array.isArray(cols)){
       if(cols.length < 1){
         return cb(new Error("cols was empty"), null);
       }
-      //concatenate values
+      //if cols is not an array, concatenate values
       var temp = "";
       for(var i = 0; i < cols.length-1; i++){
         temp += cols[i] + ", ";
       }
       temp+= cols[cols.length-1];
     }
-
 
     var queryString = "SELECT " + cols + " FROM " + table + ";";
     connection.query(queryString, cb);
@@ -98,7 +98,7 @@ var orm = {
       cb(result);
     });
   },
-
+  //joins two tables
   join: function(tableA, tableB, colA, colB){
     return tableA + " JOIN " + tableB + " ON " + tableA + "." + colA + " = " + tableB + "." + colB;
   }

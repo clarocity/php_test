@@ -5,7 +5,7 @@ var orm = require("../config/orm.js");
 var property = {
   //selects property table entries
   selectSalesInfo: function(cb){
-    var cols = ["properties.property_id", "address", "city", "state", "zip", "sale_date", "sale_price"];
+    var cols = ["properties.property_id", "sale_id", "address", "city", "state", "zip", "sale_date", "sale_price"];
     var joinStatement = orm.join("properties", "properties_sales", "property_id", "property_id");
     orm.select(cols, joinStatement, cb);
   },
@@ -21,23 +21,30 @@ var property = {
       cols.push(colName);
       vals.push(value);
     }
-    orm.insert("properties", cols, vals, function(res){
-      cb(res);
-    });
+    orm.insert("properties", cols, vals, cb);
   },
-  insertSale: function(){
-    
+  insertSale: function(saleObject, cb){
+    var cols = [];
+    var vals = [];
+
+    for(var colName in saleObject){
+      var value = saleObject[colName];
+      cols.push(colName);
+      vals.push(value);
+    }
+    orm.insert("properties_sales", cols, vals, cb);
   },
   update: function(objColVals, condition, cb){
-    orm.update("properties", objColVals, condition, function(res){
-      cb(res);
-    });
+    orm.update("properties", objColVals, condition, cb);
   },
-  delete: function(condition, cb){
-      orm.delete("properties", condition, function(res){
-        cb(res);
-      });
-    }
+  deleteProperty: function(property_id, cb){
+    var condition = "property_id = " + property_id;
+    orm.delete("properties", condition, cb);
+  },
+  deleteSale: function(sale_id, cb){
+    var condition = "sale_id = " + sale_id; 
+    orm.delete("properties_sales", condition, cb);
+  }
 };
 
 //exports database functions for controller (propertyController.js) use

@@ -14,16 +14,14 @@
       <input type="text" id="name" name="city" placeholder="City" required>
       <input type="text" id="name" name="state" placeholder="State" required>
       <input type="text" id="name" name="zip" placeholder="ZIP" required>
-      {{!-- <input type="text" id="name" name="sale_date" placeholder="Sale Date (mm/dd/yy)" required>
-      <input type="text" id="name" name="sale_price" placeholder="Sale Price" required> --}}
     </div>
     <button type="submit" class="addPropertyButton">Submit</button>
   </form>
  </div>
 
   <div class="row text-center">
-   <h2 class = "instructions">Add some info about the sales of a property.</h2>
-  <form method="POST" action="/properties" class = "form-inline">
+   <h2 class = "instructions">Add some information about the sales of a property.</h2>
+  <form method="POST" action="/sales" class = "form-inline">
     <div class = "form-group">
       <select name="property_id" id = "property_dropdown">
         {{#each properties}}
@@ -54,8 +52,9 @@
               </table>
               {{#each sales}}
             <table>
-              <form action="/properties/{{this.property_id}}?_method=PUT" method="POST">
+
                 <tr>
+            {{!-- <form action="/properties/{{this.property_id}}?_method=PUT" method="POST"></form> --}}
                   <td>{{this.property_id}}</td>
                   <td>{{this.address}}</td>
                   <td>{{this.city}}</td> 
@@ -63,10 +62,10 @@
                   <td>{{this.zip}}</td> 
                   <td>{{this.sale_date}}</td>
                   <td>{{this.sale_price}}</td> 
-              </form>
+              {{!-- </form> --}}
                   <td>
-                    <form method="POST" action="/properties/delete/{{id}}?_method=DELETE" class = "form-inline">
-                        <button id="property-id{{id}}" type="submit">Remove</button>
+                    <form method="POST" action="/sales/delete/{{this.sale_id}}" class = "form-inline">
+                        <button type="submit">Remove</button>
                     </form>
                   </td>
                 </tr>

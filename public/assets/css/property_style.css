@@ -71,3 +71,7 @@ td, th{
   text-align: left;
   padding: 5px;
 }
+
+.form-inline{
+  font-size: 18px;
+}
