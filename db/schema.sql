@@ -17,7 +17,6 @@ CREATE TABLE properties_sales(
   sale_id INT NOT NULL AUTO_INCREMENT,
   sale_date VARCHAR (255) NOT NULL,
   sale_price VARCHAR (255) NOT NULL,
-  date TIMESTAMP,
   PRIMARY KEY (sale_id),
   FOREIGN KEY (property_id) REFERENCES properties(property_id)
 );
