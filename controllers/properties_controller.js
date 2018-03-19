@@ -53,7 +53,6 @@ router.post("/properties/update/:id", function(req, res) {
 
 router.post("/sales/delete/:id", function(req, res){
   var sale_id = req.params.id; 
-  
   property.deleteSale(sale_id, function(result) {
     res.redirect("/properties");
   });

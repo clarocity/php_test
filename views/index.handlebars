@@ -52,17 +52,13 @@
               </table>
               {{#each sales}}
             <table>
-
                 <tr>
-            {{!-- <form action="/properties/{{this.property_id}}?_method=PUT" method="POST"></form> --}}
                   <td>{{this.property_id}}</td>
                   <td>{{this.address}}</td>
                   <td>{{this.city}}</td> 
                   <td>{{this.state}}</td>
                   <td>{{this.zip}}</td> 
                   <td>{{this.sale_date}}</td>
-                  <td>{{this.sale_price}}</td> 
-              {{!-- </form> --}}
                   <td>
                     <form method="POST" action="/sales/delete/{{this.sale_id}}" class = "form-inline">
                         <button type="submit">Remove</button>
