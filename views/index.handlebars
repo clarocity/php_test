@@ -1,0 +1,72 @@
+<div class = "container">
+  <div class="jumbotron container-fluid">
+    <div class = "jtext">
+      <h1>Clarocity</h1>
+      <h2 class= "small-text">Reinventing the Real Estate Valuation Market</h2>
+    </div>
+  </div>
+
+ <div class="row text-center">
+   <h2 class = "instructions">Add a new property to the list, and it will appear in the table below. You can remove a property from the list using the "Remove" button.</h2>
+  <form method="POST" action="/properties" class = "form-inline">
+    <div class = "form-group">
+      <input type="text" id="name" name="address" placeholder="Address" required>
+      <input type="text" id="name" name="city" placeholder="City" required>
+      <input type="text" id="name" name="state" placeholder="State" required>
+      <input type="text" id="name" name="zip" placeholder="ZIP" required>
+    </div>
+    <button type="submit" class="addPropertyButton">Submit</button>
+  </form>
+ </div>
+
+  <div class="row text-center">
+   <h2 class = "instructions">Add some information about the sales of a property.</h2>
+  <form method="POST" action="/sales" class = "form-inline">
+    <div class = "form-group">
+      <select name="property_id" id = "property_dropdown">
+        {{#each properties}}
+        <option value = "{{this.property_id}}">{{this.address}}</option>
+         {{/each}}
+      </select>
+      <input type="text" name="sale_date" placeholder="Sale Date (mm/dd/yy)" required>
+      <input type="text" name="sale_price" placeholder="Sale Price" required>
+    </div>
+    <button type="submit" class="addPropertyButton">Submit</button>
+  </form>
+ </div>
+
+  <div class = "container">
+    <div id = "newProperty">
+        <h2>Properties to Review</h2>
+            <table>
+              <thead>
+                <th>ID</th>
+                <th>Address</th> 
+                <th>City</th>
+                <th>State</th>
+                <th>ZIP</th> 
+                <th>Sale Date</th>
+                <th>Sale Price</th>
+                <th></th>
+              </thead>
+              </table>
+              {{#each sales}}
+            <table>
+                <tr>
+                  <td>{{this.property_id}}</td>
+                  <td>{{this.address}}</td>
+                  <td>{{this.city}}</td> 
+                  <td>{{this.state}}</td>
+                  <td>{{this.zip}}</td> 
+                  <td>{{this.sale_date}}</td>
+                  <td>
+                    <form method="POST" action="/sales/delete/{{this.sale_id}}" class = "form-inline">
+                        <button type="submit">Remove</button>
+                    </form>
+                  </td>
+                </tr>
+            </table>
+        {{/each}}
+      </div>
+  </div>
+</div>
