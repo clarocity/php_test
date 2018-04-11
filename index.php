@@ -1,7 +1,8 @@
 <?php
-  include_once("config.php");
-
-  $result = mysqli_query($mysqli, "SELECT * FROM property ORDER BY id DESC");
+  include_once("./classes/methods.php");
+  $connection = new Methods();
+  $read = $connection->read();
+  $result = $read->fetch_array();
 ?>
 
 
@@ -45,8 +46,9 @@
           <td><strong>View All Sales</strong></td>
         </tr>
 
+
         <?php
-          while ($res = mysqli_fetch_array($result)) {
+          while ($res = $read->fetch_array()) {
             echo "<tr>";
             echo "<td class=\"text-center\">".$res["address"]."</td>";
             echo "<td class=\"text-center\">".$res["city"]."</td>";

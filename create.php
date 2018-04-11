@@ -1,5 +1,5 @@
 <?php
-  include_once("config.php");
+  include_once("./classes/methods.php");
 
   if (isset($_POST["Submit"])) {
     $address = $_POST["address"];
@@ -10,8 +10,8 @@
     if (empty($address) || empty($city) || empty($state) || empty($zip)) {
       echo "Please fill out all fields.";
     } else {
-      $result = mysqli_query($mysqli, "INSERT INTO property (address, city, state, zip) VALUES ('$address', '$city', '$state', '$zip')");
-
+      $connection = new Methods();
+      $connection->create($address, $city, $state, $zip);
       header("Location:index.php");
     }
   }
