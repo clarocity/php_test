@@ -1,52 +1,67 @@
 <?php
-// include config file to connect to db
-include_once("config.php");
+  include_once("config.php");
 
-// get property id from URL
-$id = $_GET['id'];
+  $id = $_GET['id'];
 
-// fetch data of sales for that id
-$sales_result = mysqli_query($mysqli, "SELECT a.id, a.sales_date, a.sales_price FROM sales a JOIN property b ON a.property_id = b.id WHERE a.property_id = $id");
+  $sales_result = mysqli_query($mysqli, "SELECT a.id, a.sales_date, a.sales_price FROM sales a JOIN property b ON a.property_id = b.id WHERE a.property_id = $id");
 
-$result = mysqli_query($mysqli, "SELECT * FROM property WHERE id=$id");
+  $result = mysqli_query($mysqli, "SELECT * FROM property WHERE id=$id");
 ?>
 
 <!DOCTYPE html>
 <html>
   <head>
     <title>Sales for this Property</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
 
   <body>
-    <a href="index.php">Home</a>
-    <h1>Sales for</h1>
-      <?php
-        while ($res = mysqli_fetch_array($result)) {
-          echo $res["address"]."<br>";
-          echo $res["city"];
-        }
-      ?>
-    <table>
-      <?php
-        while ($sales_res = mysqli_fetch_array($sales_result)) {
-          echo "<tr>";
-          // echo "<td>Id: ".$sales_res["id"]."</td>";
-          echo "<td>Date: ".$sales_res["sales_date"]."</td>";
-          echo "<td>Price: ".$sales_res["sales_price"]."</td>";
-          echo "<td>
 
-                <a href=\"sales_update.php?id=$sales_res[id]\">Edit</a> |
-                <a href=\"sales_delete.php?id=$sales_res[id]\">Delete</a>
-                </td>";
-        }
-      ?>
-    </table>
+    <div class="container">
 
+      <div class="row">
+        <h1 class="text-center">All Sales for Property</h1>
 
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <p class="navbar-btn">
+              <a href="index.php" class="btn btn-primary">Home</a>
+            </p>
+          </div>
+        </nav>
+      </div>
 
+      <h2>Sales for</h2>
+        <?php
+          while ($res = mysqli_fetch_array($result)) {
+            echo "<h4>".$res["address"]."</h4>";
+            echo "<h4>".$res["city"].", ".$res["state"].", ".$res["zip"]."</h4>";
 
+          }
+        ?>
+      <table class="table table-striped table-bordered text-center">
+        <tr>
+          <td>Sales Date</td>
+          <td>Sales Price</td>
+          <td>Update Sale</td>
+          <td>Delete Sale</td>
+        </tr>
 
+        <?php
+          while ($sales_res = mysqli_fetch_array($sales_result)) {
+            echo "<tr>";
+            // echo "<td>Id: ".$sales_res["id"]."</td>";
+            echo "<td>".$sales_res["sales_date"]."</td>";
+            echo "<td>".$sales_res["sales_price"]."</td>";
+            echo "<td class=\"text-center\"><a role=\"button\" class=\"btn btn-info\" href=\"sales_update.php?id=$sales_res[id]\">Edit</a></td>
+                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-danger\" href=\"sales_delete.php?id=$sales_res[id]\">Delete</a>
+                  </td>";
+          }
+        ?>
+      </table>
+
+    </div>
 
   </body>
-
 </html>

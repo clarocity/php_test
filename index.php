@@ -1,48 +1,67 @@
 <?php
-  // connect with database
   include_once("config.php");
 
-  // fetch data from database
-  // select all rows from property table, in descending order by id
   $result = mysqli_query($mysqli, "SELECT * FROM property ORDER BY id DESC");
 ?>
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Property Sales</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
 
   <body>
-    <h1>Property Sales</h1>
-    <table>
-      <tr>
-        <td>Address</td>
-        <td>City</td>
-        <td>State</td>
-        <td>Zip</td>
-        <td>More</td>
-      </tr>
 
-      <!-- php file of data fetch -->
-      <?php
-        while ($res = mysqli_fetch_array($result)) {
-          echo "<tr>";
-          echo "<td>".$res["address"]."</td>";
-          echo "<td>".$res["city"]."</td>";
-          echo "<td>".$res["state"]."</td>";
-          echo "<td>".$res["zip"]."</td>";
-          echo "<td>
-              <a href=\"sales_create.php?id=$res[id]\">Create Sales</a> |
-              <a href=\"sales.php?id=$res[id]\">Sales</a> |
-              <a href=\"update.php?id=$res[id]\">Edit</a> | <a href=\"delete.php?id=$res[id]\">Delete</a>
-              </td>";
-        }
-      ?>
-    </table>
-    <!-- create a new property -->
-    <a href="create.php">Add New Property</a>
+    <div class="container">
+
+      <div class="row">
+        <h1 class="text-center">Property Sales</h1>
+
+        <nav class="navbar navbar-default">
+          <div class="container">
+              <p class="navbar-btn">
+                <a href="create.php" class="btn btn-primary">Add New Property</a>
+              </p>
+          </div>
+        </nav>
+      </div>
+
+      <table class="table table-striped table-bordered text-center">
+        <tr>
+          <td><strong>Address</strong></td>
+          <td><strong>City</strong></td>
+          <td><strong>State</strong></td>
+          <td><strong>Zip</strong></td>
+          <td><strong>Edit Property</strong></td>
+          <td><strong>Delete Property<strong></td>
+          <td><strong>Add New Sales</strong></td>
+          <td><strong>View All Sales</strong></td>
+        </tr>
+
+        <?php
+          while ($res = mysqli_fetch_array($result)) {
+            echo "<tr>";
+            echo "<td class=\"text-center\">".$res["address"]."</td>";
+            echo "<td class=\"text-center\">".$res["city"]."</td>";
+            echo "<td class=\"text-center\">".$res["state"]."</td>";
+            echo "<td class=\"text-center\">".$res["zip"]."</td>";
+            echo "<td class=\"text-center\"><a role=\"button\" class=\"btn btn-info\" href=\"update.php?id=$res[id]\">Edit Property</a></td>
+                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-danger\" href=\"delete.php?id=$res[id]\">Delete Property</a></td>
+                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-success\" href=\"sales_create.php?id=$res[id]\">New Sale</a></td>
+                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-primary\" href=\"sales.php?id=$res[id]\">All Sales</a></td>
+                </td>";
+          }
+        ?>
+      </table>
+
+    </div>
+
   </body>
 </html>
