@@ -1,5 +1,5 @@
 <?php
-  include_once("config.php");
+  include_once("./classes/methods.php");
 
   if (isset($_POST["Submit"])) {
     $property_id = $_POST["property_id"];
@@ -7,11 +7,12 @@
     $sales_price = $_POST["sales_price"];
 
     if (empty($property_id) || empty($sales_date) || empty($sales_price)) {
-      echo "<font>Please fill out all fields.</font>";
+      echo "Please fill out all fields.";
     } else {
-      $result = mysqli_query($mysqli, "INSERT INTO sales (property_id, sales_date, sales_price) VALUES ('$property_id', '$sales_date', '$sales_price')");
+      $connection = new Methods();
+      $connection->sales_create($property_id, $sales_date, $sales_price);
+      header("Location:index.php");
     }
-    header("Location:index.php");
   }
 ?>
 

@@ -1,9 +1,10 @@
 <?php
-  include_once("config.php");
+  include_once("./classes/methods.php");
 
   $id = $_GET["id"];
 
-  $result = mysqli_query($mysqli, "DELETE FROM sales WHERE id=$id");
+  $connection = new Methods();
+  $delete = $connection->delete($id, 'sales');
 
   header("Location:index.php");
 ?>

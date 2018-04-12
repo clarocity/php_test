@@ -1,20 +1,21 @@
 <?php
-  class property {
-    var $address;
-    var $city;
-    var $state;
-    var $zip;
-    function __construct($property_address, $city) {
-      $this->address = $property_address;
-      $this->city = $city;
-    }
-    function set_address($new_address, $city) {
-      $this->address = $new_address;
-      $this->city = $city;
-    }
-    function get_info() {
-      return $this->address.$this->city;
 
+  class property {
+    public $address;
+    public $city;
+    public $state;
+    public $zip;
+    private $connection;
+
+    public function __construct($db) {
+      $this->connection = $db;
+    }
+    // used by table
+    function read() {
+      // select all data
+      $query = "SELECT * FROM property ORDER BY id DESC";
+      // $stmt = $this->connection->
     }
   }
+
 ?>

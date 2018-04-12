@@ -1,16 +1,16 @@
 <?php
-  include_once("config.php");
+  include_once("./classes/methods.php");
 
-  if (isset($_POST['update'])) {
-    $id = $_POST['id'];
-    $sales_date = $_POST['sales_date'];
-    $sales_price = $_POST['sales_price'];
+  if (isset($_POST["update"])) {
+    $id = $_POST["id"];
+    $sales_date = $_POST["sales_date"];
+    $sales_price = $_POST["sales_price"];
 
-    if (empty($sales_date) || empty($sales_price)) {
+    if (empty($id) || empty($sales_date) || empty($sales_price)) {
       echo "Please fill out all fields.";
     } else {
-      $result = mysqli_query($mysqli, "UPDATE sales SET sales_date='$sales_date', sales_price='$sales_price' WHERE id=$id");
-
+      $connection = new Methods();
+      $connection->sales_update($id, $sales_date, $sales_price);
       header("Location:index.php");
     }
   }
@@ -19,12 +19,13 @@
 <?php
   $id = $_GET["id"];
 
-  $result = mysqli_query($mysqli, "SELECT * FROM sales WHERE id=$id");
+  $connection = new Methods();
+  $read_by_id = $connection->read_by_id($id, 'sales');
 
-  while ($res = mysqli_fetch_array($result)) {
-    $id = $res['id'];
-    $sales_date = $res['sales_date'];
-    $sales_price = $res['sales_price'];
+  while ($res = $read_by_id->fetch_array()) {
+    $id = $res["id"];
+    $sales_date = $res["sales_date"];
+    $sales_price = $res["sales_price"];
   }
 ?>
 

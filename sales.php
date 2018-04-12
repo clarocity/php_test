@@ -1,11 +1,11 @@
 <?php
-  include_once("config.php");
+  include_once("./classes/methods.php");
 
-  $id = $_GET['id'];
+  $id = $_GET["id"];
 
-  $sales_result = mysqli_query($mysqli, "SELECT a.id, a.sales_date, a.sales_price FROM sales a JOIN property b ON a.property_id = b.id WHERE a.property_id = $id");
-
-  $result = mysqli_query($mysqli, "SELECT * FROM property WHERE id=$id");
+  $connection = new Methods();
+  $read_join = $connection->read_join($id);
+  $read_by_id = $connection->read_by_id($id, 'property');
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
 
       <h2>Sales for</h2>
         <?php
-          while ($res = mysqli_fetch_array($result)) {
+          while ($res = $read_by_id->fetch_array()) {
             echo "<h4>".$res["address"]."</h4>";
             echo "<h4>".$res["city"].", ".$res["state"].", ".$res["zip"]."</h4>";
 
@@ -49,7 +49,7 @@
         </tr>
 
         <?php
-          while ($sales_res = mysqli_fetch_array($sales_result)) {
+          while ($sales_res = $read_join->fetch_array()) {
             echo "<tr>";
             // echo "<td>Id: ".$sales_res["id"]."</td>";
             echo "<td>".$sales_res["sales_date"]."</td>";

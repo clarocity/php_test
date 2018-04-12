@@ -1,34 +1,35 @@
 <?php
-  include_once("config.php");
+  include_once("./classes/methods.php");
 
-  if (isset($_POST['update'])) {
-    $id = $_POST['id'];
-    $address = $_POST['address'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $zip = $_POST['zip'];
+  if (isset($_POST["update"])) {
+    $id = $_POST["id"];
+    $address = $_POST["address"];
+    $city = $_POST["city"];
+    $state = $_POST["state"];
+    $zip = $_POST["zip"];
 
-    if (empty($address) || empty($city) || empty($state) || empty($zip)) {
+    if (empty($id) || empty($address) || empty($city) || empty($state) || empty($zip)) {
       echo "Please fill out all fields.";
     } else {
-      $result = mysqli_query($mysqli, "UPDATE property SET address='$address', city='$city', state='$state', zip='$zip' WHERE id=$id");
-
+      $connection = new Methods();
+      $connection->update($id, $address, $city, $state, $zip);
       header("Location:index.php");
     }
   }
 ?>
 
 <?php
-  $id = $_GET['id'];
+  $id = $_GET["id"];
 
-  $result = mysqli_query($mysqli, "SELECT * FROM property WHERE id=$id");
+  $connection = new Methods();
+  $read_by_id = $connection->read_by_id($id, 'property');
 
-  while ($res = mysqli_fetch_array($result)) {
-    $id = $res['id'];
-    $address = $res['address'];
-    $city = $res['city'];
-    $state = $res['state'];
-    $zip = $res['zip'];
+  while ($res = $read_by_id->fetch_array()) {
+    $id = $res["id"];
+    $address = $res["address"];
+    $city = $res["city"];
+    $state = $res["state"];
+    $zip = $res["zip"];
   }
 ?>
 
