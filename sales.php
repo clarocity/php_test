@@ -15,7 +15,10 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
   </head>
 
   <body>
@@ -51,19 +54,48 @@
         </tr>
 
         <?php
+
           while ($sales_res = $read_join->fetch_array()) {
             echo "<tr>";
             // echo "<td>Id: ".$sales_res["id"]."</td>";
             echo "<td>".$sales_res["sales_date"]."</td>";
-            echo "<td>".$sales_res["sales_price"]."</td>";
+            echo "<td>$".$sales_res["sales_price"]."</td>";
             echo "<td class=\"text-center\"><a role=\"button\" class=\"btn btn-info\" href=\"sales_update.php?id=$sales_res[id]\">Edit</a></td>
-                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-danger\" href=\"sales_delete.php?id=$sales_res[id]\">Delete</a>
-                  </td>";
+                <td class=\"text-center\">
+                  <div>
+                    <button type=\"button\" class=\"btn btn-danger\" data-href=\"sales_delete.php?id=$sales_res[id]\" data-toggle=\"modal\" data-target=\"#confirm-delete\">Delete</button>
+
+                    <div class=\"modal fade\" id=\"confirm-delete\" tabindex=\"=1\" aria-hidden=\"true\" aria-labelledby=\"#confirm-delete\" role=\"dialog\">
+                      <div class=\"modal-dialog\">
+                        <div class=\"modal-content\">
+                          <div class=\"modal-header\">
+                            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>
+                            <h4>Are you sure?</h4>
+                          </div>
+                          <div class=\"modal-body\">
+                            <p>Are you sure you want to delete this sale?</p>
+                          </div>
+                          <div class=\"modal-footer\">
+                            <a class=\"btn btn-danger btn-ok\">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </td>";
           }
         ?>
+
       </table>
 
     </div>
+    <script>
+      $('#confirm-delete').on('show.bs.modal', function(e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+      });
+    </script>
+
 
   </body>
 </html>

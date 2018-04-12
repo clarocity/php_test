@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
@@ -53,15 +54,43 @@
             echo "<td class=\"text-center\">".$res["state"]."</td>";
             echo "<td class=\"text-center\">".$res["zip"]."</td>";
             echo "<td class=\"text-center\"><a role=\"button\" class=\"btn btn-info\" href=\"update.php?id=$res[id]\">Edit Property</a></td>
-                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-danger\" href=\"delete.php?id=$res[id]\">Delete Property</a></td>
-                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-success\" href=\"sales_create.php?id=$res[id]\">New Sale</a></td>
-                <td class=\"text-center\"><a role=\"button\" class=\"btn btn-primary\" href=\"sales.php?id=$res[id]\">All Sales</a></td>
-                </td>";
+
+              <td class=\"text-center\"><div>
+                <button type=\"button\" class=\"btn btn-danger\" data-href=\"delete.php?id=$res[id]\" data-toggle=\"modal\" data-target=\"#confirm-delete\">Delete Property</button>
+
+                <div class=\"modal fade\" id=\"confirm-delete\" tabindex=\"=1\" aria-hidden=\"true\" aria-labelledby=\"#confirm-delete\" role=\"dialog\">
+                  <div class=\"modal-dialog\">
+                    <div class=\"modal-content\">
+                      <div class=\"modal-header\">
+                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>
+                        <h4>Are you sure?</h4>
+                      </div>
+                      <div class=\"modal-body\">
+                        <p>Are you sure you want to delete this property?</p>
+                      </div>
+                      <div class=\"modal-footer\">
+                        <a class=\"btn btn-danger btn-ok\">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </td>
+
+
+              <td class=\"text-center\"><a role=\"button\" class=\"btn btn-success\" href=\"sales_create.php?id=$res[id]\">New Sale</a></td>
+              <td class=\"text-center\"><a role=\"button\" class=\"btn btn-primary\" href=\"sales.php?id=$res[id]\">All Sales</a></td>
+              </td>";
           }
         ?>
       </table>
 
     </div>
+    <script>
+      $('#confirm-delete').on('show.bs.modal', function(e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+      });
+    </script>
 
   </body>
 </html>
