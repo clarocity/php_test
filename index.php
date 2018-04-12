@@ -2,9 +2,7 @@
   include_once("./classes/methods.php");
   $connection = new Methods();
   $read = $connection->read();
-  $result = $read->fetch_array();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
