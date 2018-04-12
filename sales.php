@@ -12,6 +12,8 @@
 <html>
   <head>
     <title>Sales for this Property</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
@@ -23,10 +25,10 @@
       <div class="row">
         <h1 class="text-center">All Sales for Property</h1>
 
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default" id="navcolor">
           <div class="container">
             <p class="navbar-btn">
-              <a href="index.php" class="btn btn-primary">Home</a>
+              <a href="index.php" class="btn btn-primary pull-right">Home</a>
             </p>
           </div>
         </nav>

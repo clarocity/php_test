@@ -48,10 +48,10 @@
       <div class="row">
         <h1 class="text-center">Update Sale</h1>
 
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default" id="navcolor">
           <div class="container">
             <p class="navbar-btn">
-              <a href="index.php" class="btn btn-primary">Home</a>
+              <a href="index.php" class="btn btn-primary pull-right">Home</a>
             </p>
           </div>
         </nav>

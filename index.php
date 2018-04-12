@@ -23,10 +23,10 @@
       <div class="row">
         <h1 class="text-center">Property Sales</h1>
 
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default" id="navcolor">
           <div class="container">
               <p class="navbar-btn">
-                <a href="create.php" class="btn btn-primary">Add New Property</a>
+                <a href="create.php" class="btn btn-primary pull-right">Add New Property</a>
               </p>
           </div>
         </nav>
