@@ -34,7 +34,7 @@
       </div>
 
       <table class="table table-striped table-bordered text-center">
-        <tr>
+        <tr id="notSelectable">
           <td><strong>Address</strong></td>
           <td><strong>City</strong></td>
           <td><strong>State</strong></td>
@@ -49,7 +49,7 @@
         <?php
           while ($res = $read->fetch_array()) {
             echo "<tr>";
-            echo "<td class=\"text-center\">".$res["address"]."</td>";
+            echo "<td id=\"notSelectable\" class=\"text-center\">".$res["address"]."</td>";
             echo "<td class=\"text-center\">".$res["city"]."</td>";
             echo "<td class=\"text-center\">".$res["state"]."</td>";
             echo "<td class=\"text-center\">".$res["zip"]."</td>";
@@ -80,7 +80,8 @@
 
               <td class=\"text-center\"><a role=\"button\" class=\"btn btn-success\" href=\"sales_create.php?id=$res[id]\">New Sale</a></td>
               <td class=\"text-center\"><a role=\"button\" class=\"btn btn-primary\" href=\"sales.php?id=$res[id]\">All Sales</a></td>
-              </td>";
+              </td>
+              </tr>";
           }
         ?>
       </table>
@@ -90,6 +91,11 @@
       $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
       });
+    </script>
+    <script type="text/javascript">
+      document.getElementById("notSelectable").onclick = function() {
+        alert('Click on one of the button to edit!')
+      }
     </script>
 
   </body>
