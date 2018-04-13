@@ -1,5 +1,5 @@
 <?php
-  include_once("./classes/methods.php");
+  include_once("./../server/methods.php");
 
   $id = $_GET["id"];
 

@@ -1,5 +1,5 @@
 <?php
-  include_once("./classes/methods.php");
+  include_once("./../server/methods.php");
 
   if (isset($_POST["update"])) {
     $id = $_POST["id"];
@@ -34,7 +34,7 @@
   <head>
     <title>Update a Sale</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./../css/style.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Latest compiled JavaScript -->
