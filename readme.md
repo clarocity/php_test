@@ -1,4 +1,4 @@
-## Valuation Vision PHP Test Requirements
+## Clarocity PHP Test Requirements
 
  Build a Basic Application demonstrating the use of the following: 
  
@@ -15,7 +15,7 @@
  - Fork this repository and submit a Pull Request once you complete the tasks, we will then review and let you know what we think.
  - Add a Markdown file named profile.md with links to any other work you would like us to review (GitHub Repos, side project websites, etc)
  
-=======
+---
 
 ## Project Data
 
