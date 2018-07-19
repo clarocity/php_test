@@ -4,62 +4,34 @@ define('SRC', '..'. DIRECTORY_SEPARATOR .'src' . DIRECTORY_SEPARATOR);
 set_include_path(SRC);
 spl_autoload_register();
 
-try {
-	$request = $_SERVER['REQUEST_URI']; 
-	$request = parse_url($request);
-	$request = $request['path'];
-	$request = explode("/", $request);
+$request = $_SERVER['REQUEST_URI']; 
+$request = parse_url($request);
+$request = $request['path'];
+$request = explode("/", $request);
 
-	$controller = $request[1];
+try {
+
+	$controller = (empty($request[1]))? 'Index' : $request[1];
+	$action = (empty($request[2]))? 'index' : $request[2];
+
 	$control = "Controllers\\".$controller;
+
 	if(class_exists($control)) {
 
 		$control = new $control;
+	}
+	
+	if(method_exists($control, $action)) {
 
+		$control->$action();
 	} else {
 
-		$error = "class " . $control . " not found.<br />";
-		throw new Exception($error);
-	}
-	
-	
-	$action = $request[2];
-	if(!method_exists($control, $action)) {
-
-		$error = "Method " . $action . " does not exists.<br />";
-		throw new Exception($error);
+		throw new Exception('method not found.');
 	}
 
-
-	$control->$action();
 
 } catch (Exception $e) {
 
-	error_log('Caught exception: ' .  $e->getMessage() . "\n");
-	exit();
+	header("Location: http://" . $_SERVER['SERVER_NAME'] . "/");
 }
 
-?>
-
-
-
-
-<!DOCTYPE html>
-<html>
-
-	<head>
-		<title>Test</title>
-
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	    <link rel="stylesheet" href="bootstrap-4.1.2-dist/css/bootstrap.min.css"/>
-
-    	<script src="jquery/jquery-3.3.1.min.js"></script>
-    	<script src="bootstrap-4.1.2-dist/js/bootstrap.min.js"></script>
-	</head>
-
-<body>
-The content of the document......
-</body>
-
-</html>
