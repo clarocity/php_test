@@ -32,6 +32,10 @@ try {
 
 } catch (Exception $e) {
 
+	if (!empty($e->getMessage())) {
+		error_log("Caught exception: " . $e->getMessage());
+	}
+	
 	header("Location: http://" . $_SERVER['SERVER_NAME'] . "/");
 }
 

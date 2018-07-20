@@ -3,7 +3,7 @@ namespace Models;
 
 use \PDO as PDO;
 
-class Sales extends Model{
+class Sales extends Model {
 
 	function __construct() {
 		parent::__construct();
@@ -25,11 +25,9 @@ class Sales extends Model{
 			     first_name VARCHAR( 50 ) NOT NULL, 
 			     last_name VARCHAR( 250 ) NOT NULL,
 			     address VARCHAR( 150 ) NOT NULL, 
-			     city VARCHAR( 150 ) NOT NULL, 
-			     county VARCHAR( 150 ) NOT NULL, 
+			     city VARCHAR( 150 ) NOT NULL,
 			     state VARCHAR( 100 ) NOT NULL,
-			     zip VARCHAR( 50 ) NOT NULL,
-			     phone VARCHAR( 50 ) NOT NULL);" ;
+			     zip VARCHAR( 50 ) NOT NULL);" ;
 		     $this->db->exec($sql);
 
 		     echo "Table properties has been created successfully";
@@ -37,6 +35,7 @@ class Sales extends Model{
 		} catch(\PDOException $e) {
 
 		    error_log($e->getMessage());
+		    echo $e->getMessage();
 		    
 		}
 	}

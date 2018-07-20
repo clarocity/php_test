@@ -14,7 +14,11 @@ class Model {
 		$password = 'kaos29';
 
 		try {
-		    $this->db = new PDO($dsn, $user, $password);
+
+			if ( ($this->db instanceof PDO) != true ) {
+    			$this->db = new PDO($dsn, $user, $password);
+			}
+		    
 		} catch (\PDOException $e) {
 		    error_log('Connection failed: ' . $e->getMessage());
 		}

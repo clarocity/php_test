@@ -1,15 +1,7 @@
 <?php
 namespace Controllers;
 
-use Views\View;
-
-class Index {
-
-	private $view;
-
-	function __construct() {
-		$this->view = new View();
-	}
+class Index extends Controller {
 
 	public function index() {
 
