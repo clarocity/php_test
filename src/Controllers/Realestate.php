@@ -1,36 +1,41 @@
 <?php
 namespace Controllers;
 
-use Models\Sales;
+
+use Models\RealestateModel;
 
 class Realestate extends Controller {
 
-	private $sales;
+	private $realestate;
 
 	function __construct() {
 		parent::__construct();
-		$this->sales = new Sales();
+
+		$this->realestate = new RealestateModel();
 	}
 
 	public function index() {
 
-		echo 'Index found in Realestate';
+		$realestate_id = 0;
+		if (is_numeric($_GET['realestate_id'])) {
+			$realestate_id = $_GET['realestate_id'];
+		} else {
+			echo "Property does not exists.";
+			exit();
+		}
+		
+		$data = $this->realestate->read($realestate_id);
+
+		$this->view->render($data);
 	}
 
 	public function createproperties() {
 
-		$this->sales->createPropertiesTable();
+		$this->realestate->createPropertiesTable();
 
 	}
 
-	public function addressform() {
-
-		$data['first_name'] = '';
-		$data['last_name'] = '';
-		$data['address'] = '';
-		$data['city'] = '';
-		$data['state'] = '';
-		$data['zip'] = '';
+	public function propertyForm($post_url, $input, $type, $success, $data) {
 
 		$error = false;
 		$content = [];
@@ -51,13 +56,13 @@ class Realestate extends Controller {
 				$data['last_name'] = '';
 			}
 
-			if (preg_match('/[^a-zA-Z0-9,.\-\# ]/', $_POST['address'])) {
+			if (preg_match('/[^a-zA-Z0-9,.\-\# ]/', $_POST['address']) ) {
 
 				$error = true;
 				$data['address'] = '';
 			}
 
-			if (!ctype_alpha($_POST['city'])) {
+			if ( preg_match('/[^a-zA-Z\s]/', $_POST['city']) ) {
 
 				$error = true;
 				$data['city'] = '';
@@ -78,36 +83,96 @@ class Realestate extends Controller {
 			if (!$error) {
 
 				// Add data to Db
+				$this->realestate->$type($data);
 
-				header("Location: http://" . $_SERVER['SERVER_NAME'] . "/Realestate/formsuccess");
+				header("Location: http://" . $_SERVER['SERVER_NAME'] . "/Realestate/$success");
 			}
 
 		}
 
+		$data['post_url'] = $post_url;
+		$data['realestate_input'] = $input;
+
 		$content = ['error' => $error, 'data' => $data];
 
-		$this->view->render($content);
-	}
-
-	public function formsuccess() {
-
-		echo "Thank you for submitting a proper form.";
+		return $content;
 	}
 
 	public function create() {
 
+		$data['first_name'] = '';
+		$data['last_name'] = '';
+		$data['address'] = '';
+		$data['city'] = '';
+		$data['state'] = '';
+		$data['zip'] = '';
+		$post_url = "/Realestate/create";
+		$input = "";
+		$type = "create";
+		$success =  "createsuccess";
+		$content = $this->propertyForm($post_url, $input, $type, $success, $data);
+
+		$this->view->render($content);
 	}
 
-	// public function read() {
+	public function update() {
 
-	// }
+		$data = [];
 
-	// public function update() {
+		$realestate_id = 0;
+		if (is_numeric($_GET['realestate_id'])) {
+			$realestate_id = $_GET['realestate_id'];
+		} else {
+			echo "Property does not exists.";
+			exit();
+		}
 
-	// }
+		$row = $this->realestate->read($realestate_id);
 
-	// public function delete() {
+		$data['first_name'] = $row[0]['first_name'];
+		$data['last_name'] = $row[0]['last_name'];
+		$data['address'] = $row[0]['address'];
+		$data['city'] = $row[0]['city'];
+		$data['state'] = $row[0]['state'];
+		$data['zip'] = $row[0]['zip'];
 
-	// }
+		$post_url = "/Realestate/update?realestate_id=$realestate_id";
+		$input = "<input type='hidden' name='realestate_id' value='$realestate_id'>";
+		$type = "update";
+		$success = "updatesuccess";
+		$content = $this->propertyForm($post_url, $input, $type, $success, $data);
+
+		$this->view->render($content);
+	}
+
+	public function delete() {
+
+		$realestate_id = 0;
+		if (is_numeric($_POST['realestate_id'])) {
+
+			$realestate_id = $_POST['realestate_id'];
+			$this->realestate->delete($realestate_id);
+
+			header("Location: http://" . $_SERVER['SERVER_NAME'] . "/Realestate/deletedsuccess");			
+		} else {
+			echo "Property does not exists.";
+			exit();
+		}
+	}
+
+	public function createsuccess() {
+
+		$this->view->render();
+	}
+
+	public function updatesuccess() {
+
+		$this->view->render();
+	}
+
+	public function deletedsuccess() {
+
+		$this->view->render();
+	}
 
 }

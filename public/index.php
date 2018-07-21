@@ -1,4 +1,5 @@
 <?php
+setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 define('SRC', '..'. DIRECTORY_SEPARATOR .'src' . DIRECTORY_SEPARATOR);
 set_include_path(SRC);

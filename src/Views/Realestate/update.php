@@ -1,5 +1,7 @@
-<div class="row">
-  <h3>Create New Address</h3>
+<div class="container">
+  <div class="row">
+    <h3>Update Property</h3>
+  </div>
 </div>
 <?php 
   $was_validated = '';
@@ -7,8 +9,9 @@
     $was_validated = 'was-validated';
   }
 ?>
-<form action="/Realestate/addressform" method="POST" class="needs-validation <?php echo $was_validated; ?>" novalidate>
+<form action="<?= $content['data']['post_url'] ?>" method="POST" class="needs-validation <?php echo $was_validated; ?>" novalidate>
   <div class="form-row">
+    <?= $content['data']['realestate_input'] ?>
     <div class="col-md-6 mb-3">
       <label for="validationCustom01">First name</label>
       <input type="text" class="form-control" id="validationCustom01" placeholder="First name" name="first_name" value="<?php echo $content['data']['first_name']; ?>" required>
@@ -60,7 +63,7 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit">Add Address</button>
+  <button class="btn btn-primary" type="submit">Update Property</button>
 </form>
 
 <script>
