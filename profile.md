@@ -20,3 +20,5 @@ Here is the Apache config I used
         Require all granted
     </Directory>
 </VirtualHost>
+
+3. Doc root is php_test/public
