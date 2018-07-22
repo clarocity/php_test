@@ -15,13 +15,13 @@
 	</div>
 	<div class="col-6 m-botton-25">
 		<div class="row">
-			<div class="col-12 col-md-4 m-botton-15">
+			<div class="col-12 col-md-4 m-bottom-15">
 				<button type="button" onclick="window.location.href='/Sales/salesform?realestate_id=<?= $content[0][0] ?>'" class="btn btn-primary">Add a Sale</button>
 			</div>
-			<div class="col-12 col-md-4 m-botton-15">
+			<div class="col-12 col-md-4 m-bottom-15">
 				<button type="button" onclick="window.location.href='/Realestate/update?realestate_id=<?= $content[0][0] ?>'" class="btn btn-primary">Edit Property</button>
 			</div>
-			<div class="col-12 col-md-4 m-botton-15">
+			<div class="col-12 col-md-4 m-bottom-15">
 				<form method="POST" action="/Realestate/delete">
 					<input type="hidden" name="realestate_id" value="<?= $content[0][0] ?>" >
 					<button type="submit" class="btn btn-danger">Delete Property</button>

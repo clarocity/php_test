@@ -62,7 +62,9 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit">Add Property</button><a href="/" class="cancel-button">Cancel</a>
+  <div class="m-bottom-15">
+    <button class="btn btn-primary" type="submit">Add Property</button><a href="/" class="cancel-button">Cancel</a>
+  </div>
 </form>
 
 <script>
