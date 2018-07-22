@@ -2,17 +2,21 @@
 namespace Controllers;
 
 use Models\SalesModel;
-use Models\RealestateModel;
 
 class Sales extends Controller {
 
 	private $sales;
-	private $realestate;
 
 	function __construct() {
 		parent::__construct();
 		$this->sales = new SalesModel();
-		$this->realestate = new RealestateModel();
+	}
+
+	public function index() {
+
+		$data = $this->sales->read();
+
+		$this->view->render($data);
 	}
 
 	public function createsales() {
@@ -67,10 +71,21 @@ class Sales extends Controller {
 		$content = ['error' => $error, 'data' => $data];
 
 		$this->view->render($content);
-	 }
+	}
 
 	public function createsuccess() {
 
 		$this->view->render();
 	}
+
+	public function min() {
+		$data = $this->sales->min();
+		echo json_encode($data[0]);
+	}
+
+	public function max() {
+		$data = $this->sales->max();
+		echo json_encode($data[0]);
+	}
+
 }

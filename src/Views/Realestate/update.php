@@ -63,7 +63,7 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit">Update Property</button>
+  <button class="btn btn-primary" type="submit">Update Property</button><a href="/Realestate?realestate_id=<?= $content['data']['realestate_id'] ?>" class="cancel-button">Cancel</a>
 </form>
 
 <script>

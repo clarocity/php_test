@@ -2,6 +2,7 @@
 namespace Models;
 
 use \PDO as PDO;
+use \Config as Config;
 
 class Model {
 
@@ -9,9 +10,9 @@ class Model {
 
 	function __construct() {
 
-		$dsn = 'mysql:dbname=testdb;host=127.0.0.1';
-		$user = 'root';
-		$password = 'kaos29';
+		$dsn =  Config::$config['db']['dsn'];
+		$user = Config::$config['db']['user'];
+		$password = Config::$config['db']['password'];
 
 		try {
 

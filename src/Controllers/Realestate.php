@@ -10,22 +10,20 @@ class Realestate extends Controller {
 
 	function __construct() {
 		parent::__construct();
-
 		$this->realestate = new RealestateModel();
 	}
 
 	public function index() {
 
+		$data = [];
 		$realestate_id = 0;
-		if (is_numeric($_GET['realestate_id'])) {
-			$realestate_id = $_GET['realestate_id'];
-		} else {
-			echo "Property does not exists.";
-			exit();
-		}
-		
-		$data = $this->realestate->read($realestate_id);
+		if (!empty($_GET['realestate_id'])) {
+			if (is_numeric($_GET['realestate_id'])) {
+				$realestate_id = $_GET['realestate_id'];
 
+				$data = $this->realestate->read($realestate_id);
+			}
+		}
 		$this->view->render($data);
 	}
 
@@ -135,6 +133,7 @@ class Realestate extends Controller {
 		$data['city'] = $row[0]['city'];
 		$data['state'] = $row[0]['state'];
 		$data['zip'] = $row[0]['zip'];
+		$data['realestate_id'] = $realestate_id;
 
 		$post_url = "/Realestate/update?realestate_id=$realestate_id";
 		$input = "<input type='hidden' name='realestate_id' value='$realestate_id'>";

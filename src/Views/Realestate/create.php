@@ -62,7 +62,7 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit">Add Property</button>
+  <button class="btn btn-primary" type="submit">Add Property</button><a href="/" class="cancel-button">Cancel</a>
 </form>
 
 <script>

@@ -19,7 +19,7 @@ class SalesModel extends Model {
 			    id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
 			    realestate_id INT( 11 ) NOT NULL,
 			    sale_date DATE NOT NULL,
-			    sale_price FLOAT(10, 4) NOT NULL,
+			    sale_price DECIMAL(12, 2) NOT NULL,
 			FOREIGN KEY (realestate_id)
         	REFERENCES properties (id)
         	ON DELETE CASCADE);" ;
@@ -63,18 +63,96 @@ class SalesModel extends Model {
 
 	public function read() {
 
+		try {
+			$data = [];
+			$stmt = $this->db->query('SELECT 
+				properties.id as id, 
+				first_name, 
+				last_name, 
+				address, 
+				city, 
+				state, 
+				zip,
+				sale_price,
+				sale_date
+			FROM properties
+			LEFT JOIN sales
+			ON properties.id = sales.realestate_id');
+
+			while ($row = $stmt->fetch()) {
+			    array_push($data, $row);
+			}
+
+			return $data;
+
+		} catch (\PDOException $e) {
+
+			error_log($e->getMessage());
+		}
+	}
+
+	public function min() {
+
+		try {
+			$data = [];
+			$stmt = $this->db->query('SELECT 
+				properties.id as id, 
+				first_name, 
+				last_name, 
+				address, 
+				city, 
+				state, 
+				zip,
+				sale_price,
+				sale_date
+			FROM properties
+			LEFT JOIN sales
+			ON properties.id = sales.realestate_id
+	        WHERE sale_price = (SELECT MIN(sale_price) FROM sales)');
+
+			while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			    array_push($data, $row);
+			}
+
+			return $data;
+
+		} catch (\PDOException $e) {
+
+			error_log($e->getMessage());
+		}
 
 	}
 
-	public function update() {
+    public function max() {
 
+    	try {
+			$data = [];
+			$stmt = $this->db->query('SELECT 
+				properties.id as id, 
+				first_name, 
+				last_name, 
+				address, 
+				city, 
+				state, 
+				zip,
+				sale_price,
+				sale_date
+			FROM properties
+			LEFT JOIN sales
+			ON properties.id = sales.realestate_id
+	        WHERE sale_price = (SELECT MAX(sale_price) FROM sales)');
 
-	}
+			while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			    array_push($data, $row);
+			}
 
-	public function delete() {
-		
+			return $data;
+			
+		} catch (\PDOException $e) {
 
-	}
+			error_log($e->getMessage());
+		}
+    }
 }
 
 
