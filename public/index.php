@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 define('SRC', '..'. DIRECTORY_SEPARATOR .'src' . DIRECTORY_SEPARATOR);

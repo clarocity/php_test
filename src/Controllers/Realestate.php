@@ -36,62 +36,84 @@ class Realestate extends Controller {
 	public function propertyForm($post_url, $input, $type, $success, $data) {
 
 		$error = false;
+		$errors = [
+			'first_name' => '', 'last_name' => '', 'address' => '', 
+			'city' => '', 'state' => '', 'zip' => ''
+		];
 		$content = [];
 
 		if (!empty($_POST)) {
+			// Use hash_equals after php 7
+	    	if ($_SESSION[$type] != $_POST['csrf_token']) {
+		    	error_log("Possible csrf attack.");
+		        header("Location: http://" . $_SERVER['SERVER_NAME'] . $post_url);
+		        exit();
+		    }
 
 			$data = $_POST;
 			
 			if (!ctype_alpha($_POST['first_name'])) {
 
 				$error = true;
-				$data['first_name'] = '';
+				$errors['first_name'] = 'is-invalid';
+			} else {
+				$errors['first_name'] = 'is-valid';
 			}
 
 			if (!ctype_alpha($_POST['last_name'])) {
 
 				$error = true;
-				$data['last_name'] = '';
+				$errors['last_name'] = 'is-invalid';
+			} else {
+				$errors['last_name'] = 'is-valid';
 			}
 
 			if (preg_match('/[^a-zA-Z0-9,.\-\# ]/', $_POST['address']) ) {
 
 				$error = true;
-				$data['address'] = '';
+				$errors['address'] = 'is-invalid';
+			} else {
+				$errors['address'] = 'is-valid';
 			}
 
 			if ( preg_match('/[^a-zA-Z\s]/', $_POST['city']) ) {
 
 				$error = true;
-				$data['city'] = '';
+				$errors['city'] = 'is-invalid';
+			} else {
+				$errors['city'] = 'is-valid';
 			}
 
 			if (!ctype_alpha($_POST['state'])) {
 
 				$error = true;
-				$data['state'] = '';
+				$errors['state'] = 'is-invalid';
+			} else {
+				$errors['state'] = 'is-valid';
 			}
 
 			if (!preg_match('/^\d{5}$/', $_POST['zip'])) {
 
 				$error = true;
-				$data['zip'] = '';
+				$errors['zip'] = 'is-invalid';
+			} else {
+				$errors['zip'] = 'is-valid';
 			}
 
 			if (!$error) {
 
 				// Add data to Db
 				$this->realestate->$type($data);
-
+				unset($_SESSION[$type]);
 				header("Location: http://" . $_SERVER['SERVER_NAME'] . "/Realestate/$success");
 			}
 
 		}
-
+		$data['csrf_token'] = (empty($_SESSION[$type]))? '': $_SESSION[$type];
 		$data['post_url'] = $post_url;
 		$data['realestate_input'] = $input;
 
-		$content = ['error' => $error, 'data' => $data];
+		$content = ['error' => $error, 'data' => $data, 'errors' => $errors];
 
 		return $content;
 	}
@@ -108,6 +130,8 @@ class Realestate extends Controller {
 		$input = "";
 		$type = "create";
 		$success =  "createsuccess";
+
+		$this->csrf($type);
 		$content = $this->propertyForm($post_url, $input, $type, $success, $data);
 
 		$this->view->render($content);
@@ -127,18 +151,20 @@ class Realestate extends Controller {
 
 		$row = $this->realestate->read($realestate_id);
 
-		$data['first_name'] = $row[0]['first_name'];
-		$data['last_name'] = $row[0]['last_name'];
-		$data['address'] = $row[0]['address'];
-		$data['city'] = $row[0]['city'];
-		$data['state'] = $row[0]['state'];
-		$data['zip'] = $row[0]['zip'];
+		$data['first_name'] = (empty($row[0]['first_name'] ) )? '': $row[0]['first_name'];
+		$data['last_name'] = (empty($row[0]['last_name'] ) )? '': $row[0]['last_name'];
+		$data['address'] = (empty($row[0]['address'] ) )? '': $row[0]['address'];
+		$data['city'] = (empty($row[0]['city'] ) )? '': $row[0]['city'];
+		$data['state'] = (empty($row[0]['state'] ) )? '': $row[0]['state'];
+		$data['zip'] = (empty($row[0]['zip'] ) )? '': $row[0]['zip'];
 		$data['realestate_id'] = $realestate_id;
 
 		$post_url = "/Realestate/update?realestate_id=$realestate_id";
 		$input = "<input type='hidden' name='realestate_id' value='$realestate_id'>";
 		$type = "update";
 		$success = "updatesuccess";
+
+		$this->csrf($type);
 		$content = $this->propertyForm($post_url, $input, $type, $success, $data);
 
 		$this->view->render($content);
@@ -156,6 +182,18 @@ class Realestate extends Controller {
 		} else {
 			echo "Property does not exists.";
 			exit();
+		}
+	}
+
+	public function csrf($token_type) {
+
+		// This is for php versions below 7
+		if (empty($_SESSION[$token_type])) {
+		    if (function_exists('mcrypt_create_iv')) {
+		        $_SESSION[$token_type] = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+		    } else {
+		        $_SESSION[$token_type] = bin2hex(openssl_random_pseudo_bytes(32));
+		    }
 		}
 	}
 
