@@ -31,7 +31,12 @@ class Sales extends Controller {
 		$data['sale_price'] = '';
 
 		$error = false;
+		$errors = [
+			'sale_date' => '', 'sale_price' => ''
+		];
 		$content = [];
+		$invalid = 'is-invalid';
+		$valid = 'is-valid';
 
 		if (!empty($_POST)) {
 
@@ -44,12 +49,16 @@ class Sales extends Controller {
 
 			if ( !preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $_POST['sale_date']) ){
 				$error = true;
-				$data['sale_date'] = '';
+				$errors['sale_date'] = $invalid;
+			} else {
+				$errors['sale_date'] = $valid;
 			}
 
 			if (!is_numeric($_POST['sale_price'])) {
 				$error = true;
-				$data['sale_price'] = '';
+				$errors['sale_price'] = $invalid;
+			} else {
+				$errors['sale_price'] = $valid;
 			}
 
 			if (!$error) {
@@ -68,7 +77,7 @@ class Sales extends Controller {
 			}
 		}
 
-		$content = ['error' => $error, 'data' => $data];
+		$content = ['error' => $error, 'data' => $data, 'errors' => $errors];
 
 		$this->view->render($content);
 	}

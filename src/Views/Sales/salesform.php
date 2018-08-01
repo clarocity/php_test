@@ -3,13 +3,8 @@
     <h3>Create New Sale</h3>
   </div>
 </div>
-<?php 
-  $was_validated = '';
-  if($content['error']) {
-    $was_validated = 'was-validated';
-  }
-?>
-<form action="/Sales/salesform" method="POST" class="needs-validation <?php echo $was_validated; ?>" novalidate>
+
+<form action="/Sales/salesform" method="POST" class="needs-validation" novalidate>
 
   <input type="hidden" name="realestate_id" value="<?= $content['data']['realestate_id'] ?>">
 
@@ -21,7 +16,7 @@
 
     <div class="col-md-6 mb-3">
       <label for="validationCustom01">Sale Date</label>
-      <input type="text" class="form-control" id="validationCustom01" placeholder="Date" name="sale_date" value="<?= $content['data']['sale_date'] ?>" required>
+      <input type="text" class="form-control <?= $content['errors']['sale_date'] ?>" id="validationCustom01" placeholder="Date" name="sale_date" value="<?= $content['data']['sale_date'] ?>" required>
       <div class="invalid-feedback">
         Please select a valid date.
       </div>
@@ -31,7 +26,7 @@
     <div class="col-md-6 mb-3">
       <label for="validationCustom02">Sale Price</label>
 
-      <input type="text" class="form-control" id="validationCustom02" placeholder="Sale Price" name="sale_price" value="<?= $content['data']['sale_price'] ?>" required>
+      <input type="text" class="form-control <?= $content['errors']['sale_price'] ?>" id="validationCustom02" placeholder="Sale Price" name="sale_price" value="<?= $content['data']['sale_price'] ?>" required>
       <div class="invalid-feedback">
         Please enter a valid price.
       </div>

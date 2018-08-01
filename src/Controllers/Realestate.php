@@ -41,6 +41,8 @@ class Realestate extends Controller {
 			'city' => '', 'state' => '', 'zip' => ''
 		];
 		$content = [];
+		$invalid = 'is-invalid';
+		$valid = 'is-valid';
 
 		if (!empty($_POST)) {
 			// Use hash_equals after php 7
@@ -55,49 +57,49 @@ class Realestate extends Controller {
 			if (!ctype_alpha($_POST['first_name'])) {
 
 				$error = true;
-				$errors['first_name'] = 'is-invalid';
+				$errors['first_name'] = $invalid;
 			} else {
-				$errors['first_name'] = 'is-valid';
+				$errors['first_name'] = $valid;
 			}
 
 			if (!ctype_alpha($_POST['last_name'])) {
 
 				$error = true;
-				$errors['last_name'] = 'is-invalid';
+				$errors['last_name'] = $invalid;
 			} else {
-				$errors['last_name'] = 'is-valid';
+				$errors['last_name'] = $valid;
 			}
 
 			if (preg_match('/[^a-zA-Z0-9,.\-\# ]/', $_POST['address']) ) {
 
 				$error = true;
-				$errors['address'] = 'is-invalid';
+				$errors['address'] = $invalid;
 			} else {
-				$errors['address'] = 'is-valid';
+				$errors['address'] = $valid;
 			}
 
 			if ( preg_match('/[^a-zA-Z\s]/', $_POST['city']) ) {
 
 				$error = true;
-				$errors['city'] = 'is-invalid';
+				$errors['city'] = $invalid;
 			} else {
-				$errors['city'] = 'is-valid';
+				$errors['city'] = $valid;
 			}
 
 			if (!ctype_alpha($_POST['state'])) {
 
 				$error = true;
-				$errors['state'] = 'is-invalid';
+				$errors['state'] = $invalid;
 			} else {
-				$errors['state'] = 'is-valid';
+				$errors['state'] = $valid;
 			}
 
 			if (!preg_match('/^\d{5}$/', $_POST['zip'])) {
 
 				$error = true;
-				$errors['zip'] = 'is-invalid';
+				$errors['zip'] = $invalid;
 			} else {
-				$errors['zip'] = 'is-valid';
+				$errors['zip'] = $valid;
 			}
 
 			if (!$error) {
