@@ -73,10 +73,14 @@ echo "<button type='button' class= 'btn btn-primary' data-toggle='modal' data-ta
 	<style>
 		table{
 		  border: 1px solid black;
-		  border-radius:20px;
+		  border-bottom-right-radius:20px ;
 		  margin: auto;
 		}
 		
+		tr{
+		  border: 1px solid grey;
+		}
+	
 		th{
 	      background-color:skyblue;
 	      text-align:left;
@@ -94,6 +98,16 @@ echo "<button type='button' class= 'btn btn-primary' data-toggle='modal' data-ta
 			margin-top:20px;
 			margin-right:20px;
 		}
+		
+		.sales{
+			width: 100px;
+			border-radius:5px;
+			margin: 10px;
+		}
+		
+		#saleRowButton{
+			margin:10px 10px 10px 15px;
+		}
 		</style>
 	
 	
@@ -108,6 +122,7 @@ echo "<button type='button' class= 'btn btn-primary' data-toggle='modal' data-ta
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Property And Sales Info</h4>
         </div>
+        <button id='saleRowButton' type="button" class="btn btn-primary btn-xs" onClick='addSaleRow();' >Add Sale</button>
         <div class="modal-body">
 			<form name='newPropertyForm' > 
 			  <div class="form-group">
@@ -116,9 +131,9 @@ echo "<button type='button' class= 'btn btn-primary' data-toggle='modal' data-ta
 				  <input class="form-control" id='city' name='city' placeholder='City' ></input>
 				  <input class="form-control" id='state' name='state' placeholder='State' ></input>
 				  <input class="form-control" id='zip' name='zip' placeholder='Zip' ></input>
+				  <input id='existing_id' class='invisible' ></input>
 			</form>
         </div>
-        <button type="button" class="btn btn-primary btn-xs" onClick='addSaleRow();' >Add Sale</button>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-success"  data-dismiss="modal"  onClick='addNewProperty();'  >Save</button>
