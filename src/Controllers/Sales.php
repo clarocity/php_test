@@ -25,7 +25,7 @@ class Sales extends Controller {
 
 	}
 
-	 public function salesform() {
+	public function salesform() {
 
 		$data['sale_date'] = '';
 		$data['sale_price'] = '';

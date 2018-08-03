@@ -2,7 +2,7 @@
 
     <?php if (!empty($content[0][0])) : ?>
 
-	<div class="col-12 m-botton-25">
+	<div class="col-12 mb-4">
 		<div>
 		    <?= $content[0]['first_name'] ?> <?= $content[0]['last_name'] ?>
 		</div>
@@ -13,15 +13,15 @@
 			<?= $content[0]['city'] ?>, <?= $content[0]['state'] ?> <?= $content[0]['zip'] ?>
 		</div>
 	</div>
-	<div class="col-6 m-botton-25">
+	<div class="col-6 mb-4">
 		<div class="row">
-			<div class="col-12 col-md-4 m-bottom-15">
+			<div class="col-12 col-md-4 mb-3">
 				<button type="button" onclick="window.location.href='/Sales/salesform?realestate_id=<?= $content[0][0] ?>'" class="btn btn-primary">Add a Sale</button>
 			</div>
-			<div class="col-12 col-md-4 m-bottom-15">
+			<div class="col-12 col-md-4 mb-3">
 				<button type="button" onclick="window.location.href='/Realestate/update?realestate_id=<?= $content[0][0] ?>'" class="btn btn-primary">Edit Property</button>
 			</div>
-			<div class="col-12 col-md-4 m-bottom-15">
+			<div class="col-12 col-md-4 mb-3">
 				<form method="POST" action="/Realestate/delete">
 					<input type="hidden" name="realestate_id" value="<?= $content[0][0] ?>" >
 					<button type="submit" class="btn btn-danger">Delete Property</button>
@@ -38,7 +38,7 @@
 
 		<?php if(!empty($row['sale_date'])) : ?>
 
-		<div class="col-8 m-botton-25">
+		<div class="col-8 mb-4">
 			<div class="row">
 				<div class="col-12 col-md-8">
 					Sales Date: <?= $row['sale_date'] ?>

@@ -54,12 +54,6 @@
 	    		padding:5px;
 	    		margin-bottom: 15px;
 	    	}
-	    	.m-botton-25 {
-	    		margin-bottom: 25px;
-	    	}
-	    	.m-bottom-15 {
-	    		margin-bottom: 15px;
-	    	}
 	    </style>
 	</head>
 

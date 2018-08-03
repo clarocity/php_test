@@ -4,7 +4,7 @@
 		<h4>Property List</h4>
 	</div>
 
-	<div class="row m-botton-25">
+	<div class="row mb-4">
 		<button type="button" onclick="window.location.href='/Realestate/create'"
 			class="btn btn-primary">Add a Property</button>
 
