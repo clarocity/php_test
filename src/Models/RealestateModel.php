@@ -3,10 +3,12 @@ namespace Models;
 
 use \PDO as PDO;
 
-class RealestateModel extends Model {
+class RealestateModel {
+
+	private $db;
 
 	function __construct() {
-		parent::__construct();
+		$this->db = Db::connect();
 	}
 
 	public function createPropertiesTable() {
