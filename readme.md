@@ -1,5 +1,9 @@
 ## PHP Sample Application
 
+ Run these URLs to install tables
+ - http://<domain.com>/Realestate/createproperties
+ - http://<domain.com/Sales/createsales
+
  A Basic Application demonstrating the use of the following: 
  
  - MySQL queries using JOINS and SUBQUERIES
